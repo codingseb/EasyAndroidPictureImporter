@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Reflection;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -19,6 +20,10 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+
+        string version = Assembly.GetExecutingAssembly()?.GetName()?.Version?.ToString();
+
+        Title += " - " + version;
     }
 
     private void DockPanel_PreviewMouseDown(object sender, MouseButtonEventArgs e)

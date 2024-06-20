@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Autofac.Core.Resolving.Pipeline;
+using EasyAndroidPictureImporter.DependencyInjection.DIExtensions;
 using EasyAndroidPictureImporter.DependencyInjection.Middlewares;
 using EasyAndroidPictureImporter.Utils;
 
@@ -43,6 +44,7 @@ public static class DI
             .SingleInstance();
 
         builder.RegisterViewModels();
+        builder.RegisteCommands();
 
         return builder.Build();
     }

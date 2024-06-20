@@ -1,0 +1,112 @@
+﻿<UserControl x:Class="EasyAndroidPictureImporter.UI.Components.MainWindowCustomTitleBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:EasyAndroidPictureImporter.UI.Components"
+             xmlns:di="clr-namespace:EasyAndroidPictureImporter.DependencyInjection"
+             xmlns:fa="http://schemas.fontawesome.com/icons/fonts"
+             xmlns:commands="clr-namespace:EasyAndroidPictureImporter.Helpers.Commands"
+             mc:Ignorable="d" 
+             d:DesignHeight="32" d:DesignWidth="1500">
+    <UserControl.CommandBindings>
+        <CommandBinding Command="SystemCommands.MaximizeWindowCommand" Executed="MaximizeWindowExecuted"/>
+        <CommandBinding Command="SystemCommands.MinimizeWindowCommand" Executed="MinimizeWindowExecuted"/>
+    </UserControl.CommandBindings>
+    <UserControl.Resources>
+        <Style TargetType="Menu">
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Width" Value="46" />
+            <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+        </Style>
+        <Style TargetType="Path" >
+            <Setter Property="Width" Value="16" />
+            <Setter Property="Height" Value="16" />
+            <Setter Property="Fill" Value="Black" />
+        </Style>
+    </UserControl.Resources>
+    <Border x:Name="CustomWindowsTitleBar"                 
+            Background="White">
+        <DockPanel>
+            <Image  Source="{Binding Icon, RelativeSource={RelativeSource AncestorType=Window}}"
+                    d:Source="/img/Icon.png" 
+                    Width="16"
+                    Height="16"
+                    Margin="8,0,3,0" 
+                    WindowChrome.IsHitTestVisibleInChrome="True" 
+                    MouseLeftButtonDown="Image_MouseLeftButtonDown"/>
+            <StackPanel Orientation="Horizontal" 
+                        DockPanel.Dock="Right">
+                <Button Command="{di:DIResolve commands:ShowConfigCommand}"
+                        ToolTip="Afficher la fenêtre de configuration [Ctrl+,]" >
+                    <fa:FontAwesome Icon="Solid_Gear" />
+                </Button>
+                <Button Command="SystemCommands.MinimizeWindowCommand"
+                        ToolTip="Réduire">
+                    <Path Data="F1M3,8L13,8 13,7 3,7z" />
+                </Button>
+                <Button Command="SystemCommands.MaximizeWindowCommand">
+                    <Path>
+                        <Path.Style>
+                            <Style TargetType="Path" BasedOn="{StaticResource {x:Type Path}}" >
+                                <Setter Property="Data" Value="F1M12,12L4,12 4,4 12,4z M3,13L13,13 13,3 3,3z" />
+                                <Setter Property="ToolTip" Value="Agrandir" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding WindowState, RelativeSource={RelativeSource AncestorType=Window}}" Value="Maximized">
+                                        <Setter Property="Data" Value="F1M11.999,10.002L10.998,10.002 10.998,5.002 5.998,5.002 5.998,4.001 11.999,4.001z M10.002,11.999L4.001,11.999 4.001,5.998 10.002,5.998z M5.002,3L5.002,5.002 3,5.002 3,13 10.998,13 10.998,10.998 13,10.998 13,3z" />
+                                        <Setter Property="ToolTip" Value="Restaurer" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Path.Style>
+                    </Path>
+                </Button>
+                <Button Command="SystemCommands.CloseWindowCommand"
+                        ToolTip="Quitter">
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}" >
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Border Background="{TemplateBinding Background}">
+                                            <ContentPresenter 
+                                                        Margin="2"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        RecognizesAccessKey="True" />
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True" >
+                                    <Setter Property="Background" Value="Red" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                    <Path Data="F1M8.583,8L13,12.424 12.424,13 8,8.583 3.576,13 3,12.424 7.417,8 3,3.576 3.576,3 8,7.417 12.424,3 13,3.576z" >
+                        <Path.Style>
+                            <Style TargetType="Path" BasedOn="{StaticResource {x:Type Path}}" >
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Button}}" Value="True">
+                                        <Setter Property="Fill" Value="White" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Path.Style>
+                    </Path>
+                </Button>
+            </StackPanel>
+            <TextBlock Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"
+                       d:Text="Easy Android Picture Importer - 1.0.0.0"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"/>
+        </DockPanel>
+    </Border>
+</UserControl>

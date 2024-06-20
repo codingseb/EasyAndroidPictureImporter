@@ -20,10 +20,6 @@ public class DeviceViewModel
         device.Connect();
         Device = device;
         Device.DeviceRemoved += Device_DeviceRemoved;
-        Device.DeviceReset += Device_DeviceReset;
-        Device.ObjectAdded += Device_ObjectAdded;
-        Device.ObjectRemoved += Device_ObjectRemoved;
-        Device.ObjectUpdated += Device_ObjectUpdated;
     }
 
     /// <summary>
@@ -76,33 +72,9 @@ public class DeviceViewModel
 
     public DirectoryViewModel SelectedDirectory { get; set; }
 
-    private void Device_ObjectUpdated(object sender, MediaDeviceEventArgs e)
-    {
-        throw new NotImplementedException();
-    }
-
-    private void Device_ObjectRemoved(object sender, MediaDeviceEventArgs e)
-    {
-        throw new NotImplementedException();
-    }
-
-    private void Device_ObjectAdded(object sender, ObjectAddedEventArgs e)
-    {
-        throw new NotImplementedException();
-    }
-
-    private void Device_DeviceReset(object sender, MediaDeviceEventArgs e)
-    {
-        throw new NotImplementedException();
-    }
-
     private void Device_DeviceRemoved(object sender, MediaDeviceEventArgs e)
     {
         Device.DeviceRemoved -= Device_DeviceRemoved;
-        Device.DeviceReset -= Device_DeviceReset;
-        Device.ObjectAdded -= Device_ObjectAdded;
-        Device.ObjectRemoved -= Device_ObjectRemoved;
-        Device.ObjectUpdated -= Device_ObjectUpdated;
         _container.Devices.Remove(this);
     }
 }

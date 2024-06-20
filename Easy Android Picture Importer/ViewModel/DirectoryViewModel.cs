@@ -68,7 +68,6 @@ public class DirectoryViewModel(MediaDirectoryInfo mediaDirectoryInfo)
                 fileopener.StartInfo.Arguments = "\"" + path + "\"";
                 fileopener.Start();
             }
-
         }
     }
 }
