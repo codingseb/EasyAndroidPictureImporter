@@ -1,0 +1,53 @@
+﻿<Window x:Class="EasyAndroidPictureImporter.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EasyAndroidPictureImporter" 
+        xmlns:di="clr-namespace:EasyAndroidPictureImporter.DependencyInjection"
+        xmlns:vm="clr-namespace:EasyAndroidPictureImporter.ViewModel"
+        xmlns:media="clr-namespace:MediaDevices;assembly=MediaDevices"
+        mc:Ignorable="d"
+        Title="Easy Android Media Importer" 
+        Height="450" 
+        Width="800"
+        Icon="/img/Icon.png"
+        DataContext="{di:DIResolve vm:MainViewModel}"
+        d:DataContext="{d:DesignInstance Type=vm:MainViewModel}" >
+    <AutoGrid Columns="Auto,10,*" Rows="*" MinWidth="200">
+        <ListBox x:Name="DevicesListBox"
+                 SelectedIndex="0"
+                 ItemsSource="{Binding AndroidDevices}"
+                 SelectedItem="{Binding SelectedDevice, Mode=TwoWay}">
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="vm:DeviceViewModel">
+                    <StackPanel Margin="5,0">
+                        <TextBlock Text="{Binding Name}" FontWeight="Bold" />
+                        <TextBlock Text="{Binding Description}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <GridSplitter VerticalAlignment="Stretch"
+                      HorizontalAlignment="Stretch"
+                      Background="Transparent"/>
+        <GroupBox DataContext="{Binding SelectedDevice}"
+                  Padding="0,5">
+            <GroupBox.Header>
+                <MultiBinding Converter="{StringFormatMultiBindingConverter Format='{}{0} - Battery : {1}%'}" 
+                              FallbackValue="No Device selected">
+                    <Binding Path="Name" />
+                    <Binding Path="BatteryLevel" />
+                    <Binding Path="Device" />
+                </MultiBinding>
+            </GroupBox.Header>
+            <ListBox ItemsSource="{Binding Directories}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </GroupBox>
+    </AutoGrid>
+</Window>
