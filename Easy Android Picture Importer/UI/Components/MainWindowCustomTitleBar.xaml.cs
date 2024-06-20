@@ -31,7 +31,7 @@ public partial class MainWindowCustomTitleBar : UserControl
                 {
                     int x = lparam.ToInt32() & 0xffff;
                     int y = lparam.ToInt32() >> 16;
-                    
+
                     var rect = new Rect(MaximizeWindowButton.PointToScreen(
                         new Point()),
                         new Size(MaximizeWindowButton.ActualWidth, MaximizeWindowButton.ActualWidth));
@@ -48,7 +48,7 @@ public partial class MainWindowCustomTitleBar : UserControl
                     {
                         MaximizeWindowButton.SpecialIsHover = false;
                     }
-                    
+
                     rect = new Rect(MinimizeButton.PointToScreen(
                         new Point()),
                         new Size(MinimizeButton.ActualWidth, MinimizeButton.ActualWidth));
@@ -124,7 +124,7 @@ public partial class MainWindowCustomTitleBar : UserControl
 
     private void UserControl_Loaded(object sender, RoutedEventArgs e)
     {
-        if(firstLoad && !DesignerProperties.GetIsInDesignMode(this))
+        if (firstLoad && !DesignerProperties.GetIsInDesignMode(this))
         {
             var handle = new WindowInteropHelper(OwnerWindow).Handle;
             var source = HwndSource.FromHwnd(handle);
