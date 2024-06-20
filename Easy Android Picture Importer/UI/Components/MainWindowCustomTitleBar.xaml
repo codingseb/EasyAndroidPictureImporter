@@ -57,11 +57,16 @@
                       SelectedIndex="0"
                       ItemsSource="{Binding Devices}"
                       SelectedItem="{Binding SelectedDevice, Mode=TwoWay}">
+                <ComboBox.ItemContainerStyle>
+                    <Style TargetType="ComboBoxItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        <Setter Property="ToolTip" Value="{Binding Description}" />
+                    </Style>
+                </ComboBox.ItemContainerStyle>
                 <ComboBox.ItemTemplate>
                     <DataTemplate DataType="vm:DeviceViewModel">
-                        <StackPanelEx Orientation="Horizontal">
+                        <StackPanelEx>
                             <TextBlock Text="{Binding Name}" FontWeight="Bold" />
-                            <!--<TextBlock Text="{Binding Description}" FontSize="8" />-->
                         </StackPanelEx>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>

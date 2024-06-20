@@ -3,6 +3,7 @@ using Autofac.Core.Resolving.Pipeline;
 using EasyAndroidPictureImporter.DependencyInjection.DIExtensions;
 using EasyAndroidPictureImporter.DependencyInjection.Middlewares;
 using EasyAndroidPictureImporter.Utils;
+using EasyAndroidPictureImporter.ViewModel;
 
 namespace EasyAndroidPictureImporter.DependencyInjection;
 
@@ -41,6 +42,11 @@ public static class DI
 
         builder.RegisterType<MediaDeviceComparer>()
             .AsSelf()
+            .SingleInstance();
+
+        builder.RegisterType<Configuration>()
+            .AsSelf()
+            .ConfigurePipeline(pipeline => pipeline.Use(new MakeOnPropertyChangedPersistentMiddleware()))
             .SingleInstance();
 
         builder.RegisterViewModels();

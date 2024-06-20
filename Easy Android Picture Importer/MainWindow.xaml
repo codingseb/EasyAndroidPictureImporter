@@ -50,8 +50,9 @@
                         <DataTrigger Binding="{Binding SelectedDevice, Converter={IsNullToBoolConverter}}" Value="False">
                             <Setter Property="Header" >
                                 <Setter.Value>
-                                    <MultiBinding Converter="{StringFormatMultiBindingConverter Format='{}{0} - Battery : {1}%'}" >
+                                    <MultiBinding Converter="{StringFormatMultiBindingConverter Format='{}{0} - {1} - Battery : {2}%'}" >
                                         <Binding Path="SelectedDevice.Name" />
+                                        <Binding Path="SelectedDevice.Description" />
                                         <Binding Path="SelectedDevice.BatteryLevel" />
                                     </MultiBinding>
                                 </Setter.Value>
@@ -88,7 +89,7 @@
                                  CanUserResizeRows="False"
                                  HeadersVisibility="Column"
                                  VerticalGridLinesBrush="Transparent"
-                                 HorizontalGridLinesBrush="LightGray"
+                                 HorizontalGridLinesBrush="Transparent"
                                  IsReadOnly="True"
                                  SelectedValue="{Binding SelectedFile}">
                             <DataGrid.InputBindings>
@@ -117,18 +118,19 @@
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
                                 <DataGridTextColumn Binding="{Binding FileInfo.Name}"
-                                                    Width="200"
-                                                Header="Name" />
+                                                    Width="250"
+                                                    Header="Name" />
+                                <DataGridTextColumn Binding="{Binding FileInfo.LastWriteTime}"
+                                                Header="Modification" />
                                 <DataGridTextColumn Binding="{Binding Converter={conv:FileViewModelToSizeWithUnitConverter}}"
-                                                Header="Size" >
+                                                Header="Size"
+                                                    Width="60">
                                     <DataGridTextColumn.ElementStyle>
                                         <Style TargetType="TextBlock">
                                             <Setter Property="HorizontalAlignment" Value="Right" />
                                         </Style>
                                     </DataGridTextColumn.ElementStyle>
                                 </DataGridTextColumn>
-                                <DataGridTextColumn Binding="{Binding FileInfo.LastWriteTime}"
-                                                Header="Modification" />
                             </DataGrid.Columns>
                         </DataGrid>
                         <uicomp:LoadingPanel Visibility="{Binding SelectedDirectory.Files, Converter={IsNullToVisibilityConverter IsNullValue=Visible, IsNotNullValue=Collapsed}}" />

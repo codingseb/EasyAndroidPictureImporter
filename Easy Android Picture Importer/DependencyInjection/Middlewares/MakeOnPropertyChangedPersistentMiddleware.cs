@@ -47,7 +47,7 @@ public class MakeOnPropertyChangedPersistentMiddleware(string fileName = null) :
     {
         if (!hasJsonIgnoreAttributeCache.TryGetValue(e.PropertyName, out bool hasJsonIgnoreAttribute))
         {
-            hasJsonIgnoreAttribute=sender.GetType().GetProperty(e.PropertyName).GetCustomAttributes(true).OfType<JsonIgnoreAttribute>().Any();
+            hasJsonIgnoreAttribute=sender.GetType().GetProperty(e.PropertyName)?.GetCustomAttributes(true).OfType<JsonIgnoreAttribute>().Any() == true;
             hasJsonIgnoreAttributeCache[e.PropertyName] = hasJsonIgnoreAttribute;
         }
 
