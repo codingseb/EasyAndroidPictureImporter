@@ -72,6 +72,8 @@ public partial class MainWindowCustomTitleBar : UserControl
 
                     if (rect.Contains(new Point(x, y)))
                     {
+                        MaximizeWindowButton.SpecialIsHover = false;
+                        MinimizeButton.SpecialIsHover = false;
                         ExitButton.SpecialIsHover = true;
                         handled = true;
                         return new IntPtr(HTCLOSE);
