@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using EasyAndroidPictureImporter.UI.Dialogs;
+using System.Data;
 using System.Windows;
 
 namespace EasyAndroidPictureImporter.Helpers.Commands;
@@ -12,27 +13,25 @@ public class ShowConfigCommand : CommandBase
     {
         Window parentWindow = parameter as Window;
 
-        MessageBox.Show("Implement ConfigWindow", "Todo");
+        if ((parentWindow ??= App.Current.MainWindow) is not null)
+        {
+            if (parentWindow.OwnedWindows.Cast<Window>().FirstOrDefault(window => window is ConfigWindow) is ConfigWindow configWindow)
+            {
+                configWindow.Show();
+            }
+            else
+            {
+                configWindow = new ConfigWindow()
+                {
+                    Owner = parentWindow
+                };
 
-        //if ((parentWindow ??= App.Current.MainWindow) is not null)
-        //{
-        //    if (parentWindow.OwnedWindows.Cast<Window>().FirstOrDefault(window => window is ConfigWindow) is ConfigWindow configWindow)
-        //    {
-        //        configWindow.Show();
-        //    }
-        //    else
-        //    {
-        //        configWindow = new ConfigWindow()
-        //        {
-        //            Owner = parentWindow
-        //        };
-
-        //        configWindow.Show();
-        //    }
-        //}
-        //else
-        //{
-        //    (new ConfigWindow()).Show();
-        //}
+                configWindow.Show();
+            }
+        }
+        else
+        {
+            (new ConfigWindow()).Show();
+        }
     }
 }
