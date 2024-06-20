@@ -22,8 +22,8 @@
               Margin="5"
               ChildMargin="2">
         <Label Content="{Tr _Language}"
-               Target="{Binding ElementName=LangugeComboBox}"/>
-        <ComboBox x:Name="LangugeComboBox"
+               Target="{Binding ElementName=LanguageComboBox}"/>
+        <ComboBox x:Name="LanguageComboBox"
                   VerticalAlignment="Center"
                   ItemsSource="{Binding Source={x:Static loc:Loc.AvailableLanguages}}"
                   SelectedItem="{Binding SelectedLanguage}">
@@ -33,8 +33,8 @@
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
+        <Label/>
         <CheckBox Content="{Tr ShowThumbnailsInPlaceOfIconInGrid}"
-                  IsChecked="{Binding ShowThumbnailsInPlaceOfIconInGrid}" 
-                  Grid.ColumnSpan="2"/>
+                  IsChecked="{Binding ShowThumbnailsInPlaceOfIconInGrid}" />
     </AutoGrid>
 </Window>
