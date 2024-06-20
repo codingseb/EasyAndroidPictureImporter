@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -37,11 +37,11 @@
     <PackageReference Include="CodingSeb.Localization.JsonFileLoader" Version="1.3.0" />
     <PackageReference Include="CodingSeb.Localization.WPF" Version="1.3.0" />
     <PackageReference Include="CodingSeb.Mvvm" Version="1.2.4" />
-    <PackageReference Include="CodingSebLocalization.Fody" Version="1.3.0" />
+    <PackageReference Include="CodingSebLocalization.Fody" Version="1.3.0" PrivateAssets="all"/>
     <PackageReference Include="FontAwesome6.Fonts" Version="2.5.1" />
     <PackageReference Include="MediaDevices" Version="1.10.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" />
+    <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" PrivateAssets="all"/>
     <PackageReference Include="RelayCommand.Utils.Wpf.CommunityToolkit.Mvvm" Version="1.0.0.3" />
     <PackageReference Include="System.Drawing.Common" Version="8.0.6" />
   </ItemGroup>

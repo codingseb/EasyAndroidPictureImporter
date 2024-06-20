@@ -35,12 +35,12 @@ public class NotifyPropertyChangedOnChildsChanges : ViewModelBase
 
             if (obj is INotifyCollectionChanged notifyCollectionChanged)
             {
-                notifyCollectionChanged.CollectionChanged += OnCollectionChanged;
+                notifyCollectionChanged.CollectionChanged += AtCollectionChanged;
             }
         }
         else if (obj is INotifyPropertyChanged notifyPropertyChanged)
         {
-            notifyPropertyChanged.PropertyChanged += OnSubObjectPropertyChanged;
+            notifyPropertyChanged.PropertyChanged += AtSubObjectPropertyChanged;
         }
     }
 
@@ -55,16 +55,16 @@ public class NotifyPropertyChangedOnChildsChanges : ViewModelBase
 
             if (obj is INotifyCollectionChanged notifyCollectionChanged)
             {
-                notifyCollectionChanged.CollectionChanged -= OnCollectionChanged;
+                notifyCollectionChanged.CollectionChanged -= AtCollectionChanged;
             }
         }
         else if (obj is INotifyPropertyChanged notifyPropertyChanged)
         {
-            notifyPropertyChanged.PropertyChanged -= OnSubObjectPropertyChanged;
+            notifyPropertyChanged.PropertyChanged -= AtSubObjectPropertyChanged;
         }
     }
 
-    private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    private void AtCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
     {
         if (e.OldItems != null)
         {
@@ -85,7 +85,7 @@ public class NotifyPropertyChangedOnChildsChanges : ViewModelBase
         NotifyPropertyChanged("!CollectionChanged!");
     }
 
-    private void OnSubObjectPropertyChanged(object sender, PropertyChangedEventArgs e)
+    private void AtSubObjectPropertyChanged(object sender, PropertyChangedEventArgs e)
     {
         NotifyPropertyChanged("!PropertyChanged!");
     }
