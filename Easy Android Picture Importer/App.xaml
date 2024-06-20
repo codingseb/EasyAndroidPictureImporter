@@ -9,5 +9,7 @@
             <Setter Property="VerticalAlignment" Value="Stretch" />
             <Setter Property="Background" Value="Transparent" />
         </Style>
+
+        <SolidColorBrush x:Key="BaseBackgroundBrush" Color="White" />
     </Application.Resources>
 </Application>

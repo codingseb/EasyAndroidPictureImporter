@@ -18,6 +18,9 @@
         Icon="/img/Icon.png"
         DataContext="{di:DIResolve vm:MainViewModel}"
         d:DataContext="{d:DesignInstance Type=vm:MainViewModel}" >
+    <Window.CommandBindings>
+        <CommandBinding Command="SystemCommands.CloseWindowCommand" Executed="CloseWindowExecuted"/>
+    </Window.CommandBindings>
     <Window.InputBindings>
         <KeyBinding Modifiers="Ctrl"
                     Key="OemComma"
@@ -86,33 +89,34 @@
                     <GridSplitter />
                     <DockPanel>
                         <DataGrid x:Name="FilesListBox" 
-                         DataContext="{Binding SelectedDirectory}"
-                         ItemsSource="{Binding Files}"
-                         SelectionUnit="FullRow"
-                         Background="Transparent"
-                         AutoGenerateColumns="False"
-                         CanUserAddRows="False"
-                         CanUserDeleteRows="False"
-                         CanUserResizeRows="False"
-                         HeadersVisibility="Column"
-                         VerticalGridLinesBrush="LightGray"
-                         HorizontalGridLinesBrush="LightGray"
-                         IsReadOnly="True"
-                         SelectedValue="{Binding SelectedFile}">
+                                 DataContext="{Binding SelectedDirectory}"
+                                 ItemsSource="{Binding Files}"
+                                 SelectionUnit="FullRow"
+                                 Background="Transparent"
+                                 AutoGenerateColumns="False"
+                                 CanUserAddRows="False"
+                                 CanUserDeleteRows="False"
+                                 CanUserResizeRows="False"
+                                 HeadersVisibility="Column"
+                                 VerticalGridLinesBrush="LightGray"
+                                 HorizontalGridLinesBrush="LightGray"
+                                 IsReadOnly="True"
+                                 SelectedValue="{Binding SelectedFile}">
                             <DataGrid.InputBindings>
                                 <MouseBinding Gesture="LeftDoubleClick" Command="{Binding OpenSelectedFileCommand}" />
                                 <KeyBinding Gesture="Enter" Command="{Binding OpenSelectedFileCommand}" />
                             </DataGrid.InputBindings>
                             <DataGrid.Columns>
-                                <DataGridTemplateColumn>
+                                <DataGridTemplateColumn CanUserResize="False">
                                     <DataGridTemplateColumn.Header>
                                         <CheckBox DockPanel.Dock="Top"
-                                              IsChecked="{Binding CheckOrUnCheckAllfiles}"/>
+                                              IsChecked="{Binding DataContext.CheckOrUnCheckAllfiles, RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
                                     </DataGridTemplateColumn.Header>
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <CheckBox IsChecked="{Binding IsChecked}"
-                                                  VerticalContentAlignment="Center"/>
+                                                      VerticalContentAlignment="Center"
+                                                      Margin="4,0"/>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>

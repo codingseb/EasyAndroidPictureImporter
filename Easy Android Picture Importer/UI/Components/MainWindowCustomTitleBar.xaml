@@ -31,7 +31,7 @@
         </Style>
     </UserControl.Resources>
     <Border x:Name="CustomWindowsTitleBar"                 
-            Background="White">
+            Background="Transparent">
         <DockPanel>
             <Image  Source="{Binding Icon, RelativeSource={RelativeSource AncestorType=Window}}"
                     d:Source="/img/Icon.png" 

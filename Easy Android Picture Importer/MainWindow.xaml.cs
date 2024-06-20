@@ -33,4 +33,9 @@ public partial class MainWindow : Window
             FilesListBox.SelectedValue = frameworkElement.DataContext;
         }
     }
+
+    private void CloseWindowExecuted(object sender, ExecutedRoutedEventArgs e)
+    {
+        Close();
+    }
 }
