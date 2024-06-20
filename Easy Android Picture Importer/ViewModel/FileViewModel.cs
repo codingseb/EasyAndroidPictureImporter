@@ -14,7 +14,7 @@ namespace EasyAndroidPictureImporter.ViewModel;
 public class FileViewModel(MediaFileInfo fileInfo, DirectoryViewModel directory, Configuration configuration)
     : ViewModelBase
 {
-    private Configuration _configuration = configuration;
+    private readonly Configuration _configuration = configuration;
 
     public DirectoryViewModel Directory { get; } = directory;
 
@@ -82,7 +82,7 @@ public class FileViewModel(MediaFileInfo fileInfo, DirectoryViewModel directory,
 
                     retry=0;
                 }
-                catch(Exception ex)
+                catch
                 {
                     retry--;
                     await Task.Delay(10);

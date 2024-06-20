@@ -43,6 +43,22 @@
     "en": "Root path of the directory",
     "fr": "Chemin de la racine du dossier"
   },
+  "FavoriteDirectoryRemoveValidationMessage": {
+    "en": "Are you sure to remove the directory \"{0}\" ?\nYou can just hide it with the first checkbox.",
+    "fr": "Êtes-vous sur de vouloir enlever le dossier \"{0}\" ?\nVous pouvez également juste le cacher avec la première case à coché."
+  },
+  "ReloadDirectories": {
+    "en": "Reload Directories of the device",
+    "fr": "Recharger les dossiers of the device"
+  },
+  "RestoreDefaultDirectories": {
+    "en": "Restore Default directories",
+    "fr": "Restaurer les dossiers par défaut"
+  },
+  "AskForRestoreDefaultDirectoriesMessage": {
+    "en": "This will restore all default favorites directories.\n\nAll directories added by the user will be lost.\n\nDo you want to continue",
+    "fr": "Ceci va restaurer tous les dossiers favoris par défaut.\n\nTous les dossiers ajoutés par l'utilisateur seront perdu.\n\nVoulez-vous continuer ?'"
+  },
   "_Device": {
     "en": "_Device",
     "fr": "_Appareil"

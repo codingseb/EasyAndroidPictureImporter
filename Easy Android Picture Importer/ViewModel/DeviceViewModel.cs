@@ -45,6 +45,11 @@ public class DeviceViewModel
         }
     }
 
+    public void ResetDirectories()
+    {
+        directories = null;
+    }
+
     public async void ScanForDirectories()
     {
         await Task.Run(async () =>

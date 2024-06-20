@@ -1,5 +1,6 @@
 ﻿using CodingSeb.Localization;
 using CodingSeb.Mvvm;
+using CommunityToolkit.Mvvm.Input;
 using EasyAndroidPictureImporter.DependencyInjection;
 using EasyAndroidPictureImporter.Utils;
 using MediaDevices;
@@ -7,14 +8,13 @@ using Microsoft.Win32;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
-using System.Windows.Input;
 
 namespace EasyAndroidPictureImporter.ViewModel;
 
 /// <summary>
 /// The Main ViewModel of the application
 /// </summary>
-public class MainViewModel(MediaDeviceComparer mediaDeviceComparer, Configuration configuration)
+public partial class MainViewModel(MediaDeviceComparer mediaDeviceComparer, Configuration configuration)
     : NotifyPropertyChangedBaseClass, IInitializable
 {
     private IEnumerable<MediaDevice> _devices = MediaDevice.GetDevices();
@@ -78,12 +78,26 @@ public class MainViewModel(MediaDeviceComparer mediaDeviceComparer, Configuratio
     public int ImportMax { get; set; }
 
     private bool stopImporting = false;
-    private ICommand importCheckedFilesCommand;
-    public ICommand ImportCheckedFilesCommand => importCheckedFilesCommand ??= new RelayCommand(_ => ImportCheckedFiles());
 
-    public ICommand CancelImportCommand => new RelayCommand(_ => this.stopImporting = true);
+    [RelayCommand]
+    public void ReloadDirectories()
+    {
+        foreach( var device in Devices)
+        {
+            device.ResetDirectories();
+        }
 
-    private async void ImportCheckedFiles()
+        SelectedDevice.NotifyPropertyChanged(nameof(DeviceViewModel.Directories));
+    }
+
+    [RelayCommand]
+    public void CancelImport()
+    {
+        stopImporting = true;
+    }
+
+    [RelayCommand]
+    public async void ImportCheckedFiles()
     {
         IsImporting = true;
         stopImporting = false;
