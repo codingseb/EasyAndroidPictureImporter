@@ -13,7 +13,7 @@
         Background="{StaticResource BaseBackgroundBrush}"
         Icon="/img/Icon.png"
         SizeToContent="Height" 
-        Width="800"
+        Width="500"
         PreviewKeyDown="Window_PreviewKeyDown"
         WindowStartupLocation="CenterOwner"
         DataContext="{di:DIResolve vm:Configuration}"
@@ -24,7 +24,14 @@
         <Label Content="_Language"
                Target="{Binding ElementName=LangugeComboBox}"/>
         <ComboBox x:Name="LangugeComboBox"
+                  VerticalAlignment="Center"
                   ItemsSource="{Binding Source={x:Static loc:Loc.AvailableLanguages}}"
-                  SelectedItem="{Binding CurrentLanguage, Source={x:Static loc:Loc.Instance}}"/>
+                  SelectedItem="{Binding CurrentLanguage, Source={x:Static loc:Loc.Instance}}">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Converter={TrLanguageIdConverter TextId=LanguageName}}"/>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
     </AutoGrid>
 </Window>
