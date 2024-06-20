@@ -1,11 +1,9 @@
 ﻿using Autofac;
-using Autofac.Core.Resolving.Pipeline;
-using CodingSeb.Localization.Loaders;
 using EasyAndroidPictureImporter.DependencyInjection.DIExtensions;
+using EasyAndroidPictureImporter.DependencyInjection.Localization;
 using EasyAndroidPictureImporter.DependencyInjection.Middlewares;
 using EasyAndroidPictureImporter.Utils;
 using EasyAndroidPictureImporter.ViewModel;
-using System.IO;
 
 namespace EasyAndroidPictureImporter.DependencyInjection;
 
@@ -41,10 +39,6 @@ public static class DI
         };
 
         // Register types here
-
-        LocalizationLoader.Instance.FileLanguageLoaders.Add(new JsonFileLoader());
-        LocalizationLoader.Instance.AddDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "lang"));
-
         builder.RegisterType<MediaDeviceComparer>()
             .AsSelf()
             .SingleInstance();
@@ -52,7 +46,12 @@ public static class DI
         builder.RegisterType<Configuration>()
             .AsSelf()
             .ConfigurePipeline(pipeline => pipeline.Use(new MakeOnPropertyChangedPersistentMiddleware()))
-            .SingleInstance();
+            .SingleInstance()
+            .AutoActivate();
+
+        builder.RegisterType<LocalizationInitializer>()
+            .AsSelf()
+            .AutoActivate();
 
         builder.RegisterViewModels();
         builder.RegisteCommands();

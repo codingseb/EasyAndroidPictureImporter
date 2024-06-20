@@ -43,43 +43,54 @@
         </DockPanel.Style>
         <uicomp:MainWindowCustomTitleBar DockPanel.Dock="Top"
                                         Height="32"/>
+
+        <StatusBar DockPanel.Dock="Bottom"
+                   Background="WhiteSmoke">
+            <StatusBarItem Content="{Tr NbrOfFiles, ModelBinding={Binding SelectedDevice.SelectedDirectory.FilesCount}}" />
+            <StatusBarItem Content="{Tr NbrOfIsCheckedFiles, ModelBinding={Binding SelectedDevice.SelectedDirectory.IsCheckedFilesCount}}" />
+            <StatusBarItem Content="{Tr NbrOfIsSelectedFiles, ModelBinding={Binding SelectedItems.Count, ElementName=FilesDataGrid}}" />
+        </StatusBar>
+
         <GroupBox Padding="0,5,0,0">
             <GroupBox.Style>
                 <Style TargetType="GroupBox">
-                    <Setter Property="Header" Value="No Device Selected" />
+                    <Setter Property="Header" Value="{Tr 'No Device Selected'}" />
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding SelectedDevice, Converter={IsNullToBoolConverter}}" Value="False">
                             <Setter Property="Header" >
                                 <Setter.Value>
-                                    <MultiBinding Converter="{StringFormatMultiBindingConverter Format='{}{0} - {1} - Battery : {2}%'}" >
-                                        <Binding Path="SelectedDevice.Name" />
-                                        <Binding Path="SelectedDevice.Description" />
-                                        <Binding Path="SelectedDevice.BatteryLevel" />
-                                    </MultiBinding>
+                                    <Tr TextId="GroupBoxHeaderForSelectedDevice">
+                                        <Tr.StringFormatArgsBindings>
+                                            <Binding Path="SelectedDevice.Name" />
+                                            <Binding Path="SelectedDevice.Description" />
+                                            <Binding Path="SelectedDevice.BatteryLevel" />
+                                        </Tr.StringFormatArgsBindings>
+                                    </Tr>
                                 </Setter.Value>
                             </Setter>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </GroupBox.Style>
-            <AutoGrid Columns="200,10,*,10,200" 
+            <DockPanel>
+                <AutoGrid Columns="200,10,*,10,200" 
                       RowHeight="*"
                       DataContext="{Binding SelectedDevice}">
-                <Grid>
-                    <ListBox ItemsSource="{Binding Directories}"
-                         SelectedValue="{Binding SelectedDirectory}">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate DataType="vm:DeviceDirectoryViewModel">
-                                <TextBlock Text="{Binding DirectoryInfo.Name}" />
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                    <uicomp:LoadingPanel Visibility="{Binding Directories, Converter={IsNullToVisibilityConverter IsNullValue=Visible, IsNotNullValue=Collapsed}}"/>
-                </Grid>
-                <GridSplitter />
-                <DockPanel>
                     <Grid>
-                        <DataGrid x:Name="FilesListBox" 
+                        <ListBox ItemsSource="{Binding Directories}"
+                         SelectedValue="{Binding SelectedDirectory}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate DataType="vm:DeviceDirectoryViewModel">
+                                    <TextBlock Text="{Binding DirectoryInfo.Name}" />
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                        <uicomp:LoadingPanel Visibility="{Binding Directories, Converter={IsNullToVisibilityConverter IsNullValue=Visible, IsNotNullValue=Collapsed}}"/>
+                    </Grid>
+                    <GridSplitter />
+                    <DockPanel>
+                        <Grid>
+                            <DataGrid x:Name="FilesDataGrid" 
                                  DataContext="{Binding SelectedDirectory}"
                                  ItemsSource="{Binding Files}"
                                  SelectionUnit="FullRow"
@@ -92,61 +103,81 @@
                                  VerticalGridLinesBrush="Transparent"
                                  HorizontalGridLinesBrush="Transparent"
                                  IsReadOnly="True"
-                                 SelectedValue="{Binding SelectedFile}">
-                            <DataGrid.InputBindings>
-                                <MouseBinding Gesture="LeftDoubleClick" Command="{Binding OpenSelectedFileCommand}" />
-                                <KeyBinding Gesture="Enter" Command="{Binding OpenSelectedFileCommand}" />
-                            </DataGrid.InputBindings>
-                            <DataGrid.Columns>
-                                <DataGridTemplateColumn CanUserResize="False">
-                                    <DataGridTemplateColumn.Header>
-                                        <CheckBox DockPanel.Dock="Top"
+                                 SelectedValue="{Binding SelectedFile}"
+                                 VirtualizingStackPanel.VirtualizationMode="Standard">
+                                <DataGrid.RowStyle>
+                                    <Style TargetType="{x:Type DataGridRow}">
+                                        <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                        <Setter Property="ContextMenu">
+                                            <Setter.Value>
+                                                <ContextMenu>
+                                                    <MenuItem Header="{Tr CheckSelectedFiles}"
+                                                              Command="{Binding Directory.CheckSelectedFilesCommand}"/>
+                                                    <MenuItem Header="{Tr UncheckSelectedFiles}"
+                                                              Command="{Binding Directory.UncheckSelectedFilesCommand}"/>
+                                                    <MenuItem Header="{Tr ToggleCheckSelectedFiles}"
+                                                              Command="{Binding Directory.ToggleIsCheckOfSelectedFilesCommand}"/>
+                                                </ContextMenu>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </DataGrid.RowStyle>
+                                <DataGrid.InputBindings>
+                                    <MouseBinding Gesture="LeftDoubleClick" Command="{Binding OpenSelectedFileCommand}" />
+                                    <KeyBinding Gesture="Enter" Command="{Binding OpenSelectedFileCommand}" />
+                                    <KeyBinding Gesture="Space" Command="{Binding ToggleIsCheckOfSelectedFilesCommand}" />
+                                </DataGrid.InputBindings>
+                                <DataGrid.Columns>
+                                    <DataGridTemplateColumn CanUserResize="False">
+                                        <DataGridTemplateColumn.Header>
+                                            <CheckBox DockPanel.Dock="Top"
                                               IsChecked="{Binding DataContext.CheckOrUnCheckAllfiles, RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
-                                    </DataGridTemplateColumn.Header>
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <CheckBox IsChecked="{Binding IsChecked}"
+                                        </DataGridTemplateColumn.Header>
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                       VerticalContentAlignment="Center"
                                                       Margin="4,0"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                                <DataGridTemplateColumn>
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Image Source="{Binding Converter={conv:FileViewModelToIconConverter}}" />
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                                <DataGridTextColumn Binding="{Binding FileInfo.Name}"
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn>
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Image Source="{Binding Converter={conv:FileViewModelToIconConverter}}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTextColumn Binding="{Binding FileInfo.Name}"
                                                     Width="250"
-                                                    Header="Name" />
-                                <DataGridTextColumn Binding="{Binding FileInfo.LastWriteTime}"
-                                                Header="Modification" />
-                                <DataGridTextColumn Binding="{Binding Converter={conv:FileViewModelToSizeWithUnitConverter}}"
-                                                Header="Size"
-                                                    Width="60">
-                                    <DataGridTextColumn.ElementStyle>
-                                        <Style TargetType="TextBlock">
-                                            <Setter Property="HorizontalAlignment" Value="Right" />
-                                        </Style>
-                                    </DataGridTextColumn.ElementStyle>
-                                </DataGridTextColumn>
-                            </DataGrid.Columns>
-                        </DataGrid>
-                        <uicomp:LoadingPanel Visibility="{Binding SelectedDirectory.Files, Converter={IsNullToVisibilityConverter IsNullValue=Visible, IsNotNullValue=Collapsed}}" />
-                    </Grid>
-                </DockPanel>
-                <GridSplitter />
-                <StackPanel DataContext="{Binding SelectedDirectory.SelectedFile}"
+                                                    Header="{Tr Name}" />
+                                    <DataGridTextColumn Binding="{Binding Modification}"
+                                                Header="{Tr Modification}" />
+                                    <DataGridTextColumn Binding="{Binding SizeInKB}"
+                                                Header="{Tr Size}"
+                                                Width="60">
+                                        <DataGridTextColumn.ElementStyle>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="HorizontalAlignment" Value="Right" />
+                                            </Style>
+                                        </DataGridTextColumn.ElementStyle>
+                                    </DataGridTextColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                            <uicomp:LoadingPanel Visibility="{Binding SelectedDirectory.Files, Converter={IsNullToVisibilityConverter IsNullValue=Visible, IsNotNullValue=Collapsed}}" />
+                        </Grid>
+                    </DockPanel>
+                    <GridSplitter />
+                    <StackPanel DataContext="{Binding SelectedDirectory.SelectedFile}"
                             VerticalAlignment="Center">
-                    <Image Source="{Binding Converter={conv:FileViewModelToImagePreviewConverter}}" Stretch="Uniform" />
-                    <TextBox TextWrapping="Wrap"
+                        <Image Source="{Binding Converter={conv:FileViewModelToImagePreviewConverter}}" Stretch="Uniform" />
+                        <TextBox TextWrapping="Wrap"
                              IsReadOnly="True"
                              BorderThickness="0"
                              Text="{Binding FileInfo.FullName, Mode=OneWay}" />
-                </StackPanel>
-            </AutoGrid>
+                    </StackPanel>
+                </AutoGrid>
+            </DockPanel>
         </GroupBox>
     </DockPanel>
 </Window>

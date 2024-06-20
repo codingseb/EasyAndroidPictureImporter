@@ -8,7 +8,7 @@
         xmlns:vm="clr-namespace:EasyAndroidPictureImporter.ViewModel"
         xmlns:loc="clr-namespace:CodingSeb.Localization;assembly=CodingSeb.Localization" xmlns:conv="clr-namespace:EasyAndroidPictureImporter.Helpers.Converters"
         mc:Ignorable="d"
-        Title="Configuration" 
+        Title="{Tr Configuration}" 
         WindowStyle="ToolWindow"
         Background="{StaticResource BaseBackgroundBrush}"
         Icon="/img/Icon.png"
@@ -21,12 +21,12 @@
     <AutoGrid Columns="Auto,*"
               Margin="5"
               ChildMargin="2">
-        <Label Content="_Language"
+        <Label Content="{Tr _Language}"
                Target="{Binding ElementName=LangugeComboBox}"/>
         <ComboBox x:Name="LangugeComboBox"
                   VerticalAlignment="Center"
                   ItemsSource="{Binding Source={x:Static loc:Loc.AvailableLanguages}}"
-                  SelectedItem="{Binding CurrentLanguage, Source={x:Static loc:Loc.Instance}}">
+                  SelectedItem="{Binding SelectedLanguage}">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Converter={TrLanguageIdConverter TextId=LanguageName}}"/>

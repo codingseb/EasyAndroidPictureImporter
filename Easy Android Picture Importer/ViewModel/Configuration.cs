@@ -1,8 +1,12 @@
-﻿using CodingSeb.Mvvm;
+﻿using CodingSeb.Localization;
 
 namespace EasyAndroidPictureImporter.ViewModel;
 
-public class Configuration : NotifyPropertyChangedBaseClass
+public class Configuration : ViewModelBase
 {
-    public string SelectedLanguage { get; set; }
+    public string SelectedLanguage
+    {
+        get => Loc.Instance.CurrentLanguage;
+        set => Loc.Instance.CurrentLanguage = value;
+    }
 }

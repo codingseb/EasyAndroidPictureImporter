@@ -30,7 +30,7 @@ public partial class MainWindow : Window
     {
         if(sender is FrameworkElement frameworkElement)
         {
-            FilesListBox.SelectedValue = frameworkElement.DataContext;
+            FilesDataGrid.SelectedValue = frameworkElement.DataContext;
         }
     }
 

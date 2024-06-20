@@ -1,10 +1,94 @@
 {
-  "LanguageName": {
-    "en": "English",
-    "fr": "Français"
+  "DateTimeFormat": {
+    "en": "dd/MM/yyyy HH:mm",
+    "en_US": "M/d/yyyy hh:mm tt",
+    "fr": "dd/MM/yyyy HH:mm",
+    "fr_CH": "dd.MM.yyyy HH:mm"
   },
-  "Device": {
+  "LanguageName": {
+    "en": "English (United Kingdom)",
+    "en_US": "English (United States)",
+    "fr": "Français",
+    "fr_CH": "Français (Suisse)"
+  },
+  "_Language": {
+    "en": "_Language",
+    "fr": "_Langue"
+  },
+  "_Device": {
     "en": "_Device",
     "fr": "_Appareil"
+  },
+  "Configuration": {
+    "en": "Configuration",
+    "fr": "Configuration"
+  },
+  "No Device Selected": {
+    "en": "No Device Selected",
+    "fr": "Aucun appareil sélectionné"
+  },
+  "GroupBoxHeaderForSelectedDevice": {
+    "en": "{0} - {1} - Battery : {2}%",
+    "fr": "{0} - {1} - Batterie : {2}%"
+  },
+  "Name": {
+    "en": "Name",
+    "fr": "Nom"
+  },
+  "Modification": {
+    "en": "Date modified",
+    "fr": "Modifié le"
+  },
+  "Size": {
+    "en": "Size",
+    "fr": "Taille"
+  },
+  "SizeInKB": {
+    "en": "{0} KB",
+    "fr": "{0} Ko"
+  },
+  "CheckSelectedFiles": {
+    "en": "Check selected files",
+    "fr": "Cocher les fichiers sélectionnés"
+  },
+  "UncheckSelectedFiles": {
+    "en": "Uncheck selected files",
+    "fr": "Décocher les fichiers sélectionnés"
+  },
+  "ToggleCheckSelectedFiles": {
+    "en": "Toggle check for selected files",
+    "fr": "Basculer les coches des fichiers sélectionnés"
+  },
+  "ShowConfigButtonToolTip": {
+    "en": "Show configuration window [Ctrl+,]",
+    "fr": "Afficher la fenêtre de configuration [Ctrl+,]"
+  },
+  "NbrOfFiles": {
+    "en": "{m} file | {m} files",
+    "fr": "{m} fichier | {m} fichiers"
+  },
+  "NbrOfIsSelectedFiles": {
+    "en": "{m} selected file | {m} selected files",
+    "fr": "{m} fichier sélectionné | {m} fichiers sélectionné"
+  },
+  "NbrOfIsCheckedFiles": {
+    "en": "{m} checked file | {m} checked files",
+    "fr": "{m} fichier coché | {m} fichiers cochés"
+  },
+  "Minimize": {
+    "en": "Minimize",
+    "fr": "Réduire"
+  },
+  "Maximize": {
+    "en": "Maximize",
+    "fr": "Agrandir"
+  },
+  "Restore": {
+    "en": "Restore",
+    "fr": "Restaurer"
+  },
+  "Exit": {
+    "en": "Exit",
+    "fr": "Quitter"
   }
 }

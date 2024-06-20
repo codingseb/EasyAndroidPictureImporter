@@ -74,11 +74,11 @@
             <StackPanel Orientation="Horizontal" 
                         DockPanel.Dock="Right">
                 <Button Command="{di:DIResolve commands:ShowConfigCommand}"
-                        ToolTip="Afficher la fenêtre de configuration [Ctrl+,]" >
+                        ToolTip="{Tr ShowConfigButtonToolTip}" >
                     <fa:FontAwesome Icon="Solid_Gear" />
                 </Button>
                 <Button Command="SystemCommands.MinimizeWindowCommand"
-                        ToolTip="Réduire">
+                        ToolTip="{Tr Minimize}">
                     <Path Data="F1M3,8L13,8 13,7 3,7z" />
                 </Button>
                 <Button Command="SystemCommands.MaximizeWindowCommand">
@@ -86,11 +86,11 @@
                         <Path.Style>
                             <Style TargetType="Path" BasedOn="{StaticResource {x:Type Path}}" >
                                 <Setter Property="Data" Value="F1M12,12L4,12 4,4 12,4z M3,13L13,13 13,3 3,3z" />
-                                <Setter Property="ToolTip" Value="Agrandir" />
+                                <Setter Property="ToolTip" Value="{Tr Maximize}" />
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding WindowState, RelativeSource={RelativeSource AncestorType=Window}}" Value="Maximized">
                                         <Setter Property="Data" Value="F1M11.999,10.002L10.998,10.002 10.998,5.002 5.998,5.002 5.998,4.001 11.999,4.001z M10.002,11.999L4.001,11.999 4.001,5.998 10.002,5.998z M5.002,3L5.002,5.002 3,5.002 3,13 10.998,13 10.998,10.998 13,10.998 13,3z" />
-                                        <Setter Property="ToolTip" Value="Restaurer" />
+                                        <Setter Property="ToolTip" Value="{Tr Restore}" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -98,7 +98,7 @@
                     </Path>
                 </Button>
                 <Button Command="SystemCommands.CloseWindowCommand"
-                        ToolTip="Quitter">
+                        ToolTip="{Tr Exit}">
                     <Button.Style>
                         <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}" >
                             <Setter Property="Template">

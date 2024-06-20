@@ -1,8 +1,5 @@
-﻿using Autofac.Core;
-using CodingSeb.Mvvm;
-using EasyAndroidPictureImporter.Utils;
+﻿using EasyAndroidPictureImporter.Utils;
 using MediaDevices;
-using System.IO;
 
 namespace EasyAndroidPictureImporter.ViewModel;
 
@@ -10,7 +7,7 @@ namespace EasyAndroidPictureImporter.ViewModel;
 /// Map a Media Device for the view
 /// </summary>
 public class DeviceViewModel
-    : NotifyPropertyChangedBaseClass
+    : ViewModelBase
 {
     private readonly MainViewModel _container;
 
@@ -49,32 +46,36 @@ public class DeviceViewModel
     {
         await Task.Run(() =>
         {
-            List<MediaDirectoryInfo> list = [];
-
-            var root = Device.GetRootDirectory()?.EnumerateDirectories().FirstOrDefault();
-
-            MediaDirectoryInfo dcim = root?.GetDirectoryIfExists("dcim");
-
-            if (dcim != null)
+            try
             {
-                list.AddRange(dcim.EnumerateDirectories()
-                    .Where(directory => !directory.Name.StartsWith('.')
-                    && directory.EnumerateFileSystemInfos().Any()));
+                List<MediaDirectoryInfo> list = [];
+
+                var root = Device.GetRootDirectory()?.EnumerateDirectories().FirstOrDefault();
+
+                MediaDirectoryInfo dcim = root?.GetDirectoryIfExists("dcim");
+
+                if (dcim != null)
+                {
+                    list.AddRange(dcim.EnumerateDirectories()
+                        .Where(directory => !directory.Name.StartsWith('.')
+                        && directory.EnumerateFileSystemInfos().Any()));
+                }
+
+                MediaDirectoryInfo whatsapp = root?.GetDirectoryIfExists(@"Android\media\com.whatsapp\WhatsApp\Media");
+
+                if (whatsapp != null)
+                {
+                    list.AddRange(whatsapp.EnumerateDirectories()
+                        .Where(directory => directory.Name.ContainsOneOf(["audio", "images", "video", "documents", "voice"])
+                        && !directory.Name.StartsWith('.')));
+                }
+
+                directories = list
+                    .OrderBy(directory => directory.Name)
+                    .Select(directory => new DirectoryViewModel(directory))
+                    .ToList();
             }
-
-            MediaDirectoryInfo whatsapp = root?.GetDirectoryIfExists(@"Android\media\com.whatsapp\WhatsApp\Media");
-
-            if (whatsapp != null)
-            {
-                list.AddRange(whatsapp.EnumerateDirectories()
-                    .Where(directory => directory.Name.ContainsOneOf(["audio", "images", "video", "documents", "voice"])
-                    && !directory.Name.StartsWith('.')));
-            }
-
-            directories = list
-                .OrderBy(directory => directory.Name)
-                .Select(directory => new DirectoryViewModel(directory))
-                .ToList();
+            catch { }
 
             NotifyPropertyChanged(nameof(Directories));
         });
