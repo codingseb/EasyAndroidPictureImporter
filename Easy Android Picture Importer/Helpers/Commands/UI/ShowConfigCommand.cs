@@ -9,6 +9,7 @@ namespace EasyAndroidPictureImporter.Helpers.Commands;
 /// </summary>
 public class ShowConfigCommand : CommandBase
 {
+    /// <inheritdoc/>
     public override void Execute(object parameter)
     {
         Window parentWindow = parameter as Window;
