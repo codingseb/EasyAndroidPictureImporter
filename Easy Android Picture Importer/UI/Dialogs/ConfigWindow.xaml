@@ -12,13 +12,14 @@
         WindowStyle="ToolWindow"
         Background="{StaticResource BaseBackgroundBrush}"
         Icon="/img/Icon.png"
-        SizeToContent="Height" 
-        Width="500"
+        Height="350"
+        Width="600"
         PreviewKeyDown="Window_PreviewKeyDown"
         WindowStartupLocation="CenterOwner"
         DataContext="{di:DIResolve vm:Configuration}"
         d:DataContext="{d:DesignInstance Type=vm:Configuration}">
     <AutoGrid Columns="Auto,*"
+              Rows=",,*"
               Margin="5"
               ChildMargin="2">
         <Label Content="{Tr _Language}"
@@ -36,5 +37,42 @@
         <Label/>
         <CheckBox Content="{Tr ShowThumbnailsInPlaceOfIconInGrid}"
                   IsChecked="{Binding ShowThumbnailsInPlaceOfIconInGrid}" />
+        <Label Content="{Tr Directories}" />
+        <DataGrid ItemsSource="{Binding FavoriteDirectories}"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False">
+            <DataGrid.Resources>
+                <Style TargetType="CheckBox">
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                </Style>
+            </DataGrid.Resources>
+            <DataGrid.Columns>
+                <DataGridTemplateColumn CanUserResize="False">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding Show, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  ToolTip="{Tr ShowTheDirectory}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn CanUserResize="False">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox ToolTip="{Tr AddEachChildAsFavorite}"
+                                  IsChecked="{Binding AddEachChildAsFavorite, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Binding="{Binding RootPath, UpdateSourceTrigger=PropertyChanged , Mode=TwoWay}"
+                                    Header="{Tr FavDirPath}"/>
+            </DataGrid.Columns>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="vm:FavoriteDirectoryViewModel">
+                    <AutoGrid Columns="Auto,Auto,*"
+                              ChildMargin="3,0">
+                    </AutoGrid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </DataGrid>
     </AutoGrid>
 </Window>

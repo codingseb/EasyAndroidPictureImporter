@@ -55,29 +55,23 @@ public class DeviceViewModel
 
                 var root = Device.GetRootDirectory()?.EnumerateDirectories().FirstOrDefault();
 
-                MediaDirectoryInfo dcim = root?.GetDirectoryIfExists("dcim");
-
-                if (dcim != null)
+                foreach(var favoriteDirectory in _configuration.FavoriteDirectories)
                 {
-                    list.AddRange(dcim.EnumerateDirectories()
-                        .Where(directory => !directory.Name.StartsWith('.')
-                        && directory.EnumerateFileSystemInfos().Any()));
-                }
+                    MediaDirectoryInfo mediaDirectoryInfo = root?.GetDirectoryIfExists(favoriteDirectory.RootPath);
 
-                MediaDirectoryInfo download = root?.GetDirectoryIfExists("download");
-
-                if (download?.EnumerateFileSystemInfos().Any() == true)
-                {
-                    list.Add(download);
-                }
-
-                MediaDirectoryInfo whatsapp = root?.GetDirectoryIfExists(@"Android\media\com.whatsapp\WhatsApp\Media");
-
-                if (whatsapp != null)
-                {
-                    list.AddRange(whatsapp.EnumerateDirectories()
-                        .Where(directory => directory.Name.ContainsOneOf(["audio", "images", "video", "documents", "voice"])
-                        && !directory.Name.StartsWith('.')));
+                    if (mediaDirectoryInfo != null)
+                    {
+                        if(favoriteDirectory.AddEachChildAsFavorite)
+                        {
+                            list.AddRange(mediaDirectoryInfo.EnumerateDirectories()
+                                .Where(directory => !directory.Name.StartsWith('.')
+                                    && directory.EnumerateFileSystemInfos().Any()));
+                        }
+                        else if(mediaDirectoryInfo.EnumerateFileSystemInfos().Any())
+                        {
+                            list.Add(mediaDirectoryInfo);
+                        }
+                    }
                 }
 
                 directories = list

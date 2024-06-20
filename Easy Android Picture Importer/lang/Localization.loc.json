@@ -19,6 +19,22 @@
     "en": "Show _thumbnails in files grid",
     "fr": "_Afficher les aperçus dans la grille des fichiers"
   },
+  "Directories": {
+    "en": "Directories",
+    "fr": "Dossier"
+  },
+  "ShowTheDirectory": {
+    "en": "Show The Directory",
+    "fr": "Afficher le dossier"
+  },
+  "AddEachChildAsFavorite": {
+    "en": "Add each children directories",
+    "fr": "Ajouter chaque dossier enfant"
+  },
+  "FavDirPath": {
+    "en": "Root path of the directory",
+    "fr": "Chemin de la racine du dossier"
+  },
   "_Device": {
     "en": "_Device",
     "fr": "_Appareil"

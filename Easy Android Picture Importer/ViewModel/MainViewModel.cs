@@ -19,8 +19,9 @@ public class MainViewModel(MediaDeviceComparer mediaDeviceComparer, Configuratio
 {
     private IEnumerable<MediaDevice> _devices = MediaDevice.GetDevices();
     private readonly MediaDeviceComparer _mediaDeviceComparer = mediaDeviceComparer;
-    private Configuration _configuration = configuration;
+    private readonly Configuration _configuration = configuration;
 
+    /// <inheritdoc/>
     public void Init()
     {
         Devices = new(_devices.Select(device => new DeviceViewModel(device, this, _configuration)));

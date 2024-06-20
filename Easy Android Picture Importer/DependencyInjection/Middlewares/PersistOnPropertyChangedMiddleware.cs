@@ -1,5 +1,6 @@
 ﻿using Autofac.Core.Resolving.Pipeline;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System.ComponentModel;
 using System.IO;
 using System.Reflection;
@@ -16,6 +17,13 @@ namespace EasyAndroidPictureImporter.DependencyInjection.Middlewares;
 public class PersistOnPropertyChangedMiddleware(string fileName = null, Action<object> doAfterObjectPopulated = null)
     : IResolveMiddleware
 {
+    private static readonly JsonSerializerSettings jsonSerializerSettings = new()
+    {
+        ObjectCreationHandling = ObjectCreationHandling.Replace,
+        Converters = [new StringEnumConverter()],
+        Formatting = Formatting.Indented,
+    };
+
     private readonly Dictionary<string, bool> hasJsonIgnoreAttributeCache = [];
 
     private readonly Action<object> _doAfterObjectPopulated = doAfterObjectPopulated;
@@ -43,7 +51,7 @@ public class PersistOnPropertyChangedMiddleware(string fileName = null, Action<o
             if (File.Exists(FileName))
             {
                 string json = File.ReadAllText(FileName);
-                JsonConvert.PopulateObject(json, obj);
+                JsonConvert.PopulateObject(json, obj, jsonSerializerSettings);
             }
 
             _doAfterObjectPopulated?.Invoke(obj);
@@ -64,7 +72,7 @@ public class PersistOnPropertyChangedMiddleware(string fileName = null, Action<o
         {
             Directory.CreateDirectory(Path.GetDirectoryName(FileName)!);
 
-            File.WriteAllText(FileName, JsonConvert.SerializeObject(sender, Formatting.Indented));
+            File.WriteAllText(FileName, JsonConvert.SerializeObject(sender, jsonSerializerSettings));
         }
     }
 }
