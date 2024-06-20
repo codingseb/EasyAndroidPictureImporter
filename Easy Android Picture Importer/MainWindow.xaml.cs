@@ -71,7 +71,7 @@ public partial class MainWindow : Window
 
     private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
     {
-        if (e.Key == Key.Enter 
+        if (e.Key == Key.Enter
             && e.KeyboardDevice.Modifiers == ModifierKeys.Control
             && DataContext is MainViewModel viewModel)
         {
