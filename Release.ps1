@@ -19,6 +19,10 @@ $msBuildPath = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vsw
     -prerelease | select-object -first 1
 Write-Output "MSBuild: $((Get-Command $msBuildPath).Path)"
 
+if ($OnlyBuild) {
+	$version = "x.x.x.x"
+}
+else {
 # Load current Git tag.
 $tag = $(git describe --tags)
 Write-Output "Tag: $tag"
@@ -27,6 +31,7 @@ Write-Output "Tag: $tag"
 $version = $tag.Split('-')[0].TrimStart('v')
 $version = "$version.0"
 Write-Output "Version: $version"
+}
 
 # Clean output directory.
 $publishDir = "bin/publish"
@@ -38,6 +43,8 @@ if (Test-Path $outDir) {
 # Publish the application.
 Push-Location $projDir
 try {
+	Write-OutPut "Injecting versions"
+	(Get-Content "./index.html").Replace('{{VERSION}}', "$version") | Set-Content "./index.html"
     Write-Output "Restoring:"
     dotnet restore -r win-x64
     Write-Output "Publishing:"
@@ -46,13 +53,14 @@ try {
         $msBuildVerbosityArg = ""
     }
     & $msBuildPath /target:publish /p:PublishProfile=ClickOnceProfile `
-        /p:ApplicationVersion=$version /p:Configuration=Release `
-        /p:PublishDir=$publishDir /p:PublishUrl=$publishDir `
+		/p:Configuration=Release `
+        /p:PublishDir=$publishDir `
         $msBuildVerbosityArg
 }
 finally {
     Pop-Location
 }
+
 
 if ($OnlyBuild) {
     Write-Output "Build finished."
