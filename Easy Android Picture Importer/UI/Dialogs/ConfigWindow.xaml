@@ -76,10 +76,43 @@
         <DockPanel>
             <AutoGrid Columns="*,*"
                       DockPanel.Dock="Bottom"
-                      ChildMargin="5,3"
-                      Margin="-5,0">
+                      ChildMargin="5"
+                      Margin="-5,5,-5,0">
+                <AutoGrid.Resources>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="#3469c1" />
+                        <Setter Property="Foreground" Value="WhiteSmoke" />
+                        <Setter Property="FontWeight" Value="Bold" />
+                        <Setter Property="Padding" Value="10" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border x:Name="Border" 
+                                            Background="{TemplateBinding Background}"
+                                            Padding="{TemplateBinding Padding}"
+                                            CornerRadius="4"
+                                            BorderThickness="0"
+                                            BorderBrush="{TemplateBinding BorderBrush}">
+                                        <Label Content="{TemplateBinding Content}"
+                                               x:Name="Label"
+                                               Padding="0"
+                                               HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                               Foreground="{TemplateBinding Foreground}"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#4285f4" TargetName="Border" />
+                                            <Setter Property="Foreground" Value="Black" TargetName="Label" />
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </AutoGrid.Resources>
                 <Button Content="{Tr ReloadDirectories}"
-                        Command="{Binding ReloadDirectoriesCommand, Source={di:DIResolve vm:MainViewModel}}"/>
+                        Command="{Binding ReloadDirectoriesCommand, Source={di:DIResolve vm:MainViewModel}}" />
                 <Button Content="{Tr RestoreDefaultDirectories}"
                         Command="{Binding SetDefaultDirectoriesCommand}"/>
             </AutoGrid>
