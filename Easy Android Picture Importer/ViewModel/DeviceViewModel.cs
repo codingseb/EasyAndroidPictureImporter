@@ -1,4 +1,5 @@
-﻿using CodingSeb.Mvvm;
+﻿using Autofac.Core;
+using CodingSeb.Mvvm;
 using EasyAndroidPictureImporter.Utils;
 using MediaDevices;
 using System.IO;
@@ -8,12 +9,21 @@ namespace EasyAndroidPictureImporter.ViewModel;
 /// <summary>
 /// Map a Media Device for the view
 /// </summary>
-public class DeviceViewModel : NotifyPropertyChangedBaseClass
+public class DeviceViewModel
+    : NotifyPropertyChangedBaseClass
 {
-    public DeviceViewModel(MediaDevice device)
+    private readonly MainViewModel _container;
+
+    public DeviceViewModel(MediaDevice device, MainViewModel container)
     {
+        _container = container;
         device.Connect();
         Device = device;
+        Device.DeviceRemoved += Device_DeviceRemoved;
+        Device.DeviceReset += Device_DeviceReset;
+        Device.ObjectAdded += Device_ObjectAdded;
+        Device.ObjectRemoved += Device_ObjectRemoved;
+        Device.ObjectUpdated += Device_ObjectUpdated;
     }
 
     /// <summary>
@@ -27,7 +37,7 @@ public class DeviceViewModel : NotifyPropertyChangedBaseClass
 
     public int BatteryLevel => Device.PowerLevel;
 
-    public List<MediaDirectoryInfo> Directories
+    public List<DirectoryViewModel> Directories
     {
         get
         {
@@ -37,7 +47,7 @@ public class DeviceViewModel : NotifyPropertyChangedBaseClass
 
             MediaDirectoryInfo dcim = root?.GetDirectoryIfExists("dcim");
 
-            if(dcim != null)
+            if (dcim != null)
                 list.AddRange(dcim.EnumerateDirectories().Where(directory => !directory.Name.StartsWith('.')));
 
             MediaDirectoryInfo whatsapp = root?.GetDirectoryIfExists(@"Android\media\com.whatsapp\WhatsApp\Media");
@@ -49,8 +59,46 @@ public class DeviceViewModel : NotifyPropertyChangedBaseClass
                     && !directory.Name.StartsWith('.')));
             }
 
-            return list;
+            var result = list
+                .OrderBy(directory => directory.Name)
+                .Select(directory => new DirectoryViewModel(directory))
+                .ToList();
+
+            SelectedDirectory = result.FirstOrDefault();
+
+            return result;
         }
     }
 
+    public DirectoryViewModel SelectedDirectory { get; set; }
+
+    private void Device_ObjectUpdated(object sender, MediaDeviceEventArgs e)
+    {
+        throw new NotImplementedException();
+    }
+
+    private void Device_ObjectRemoved(object sender, MediaDeviceEventArgs e)
+    {
+        throw new NotImplementedException();
+    }
+
+    private void Device_ObjectAdded(object sender, ObjectAddedEventArgs e)
+    {
+        throw new NotImplementedException();
+    }
+
+    private void Device_DeviceReset(object sender, MediaDeviceEventArgs e)
+    {
+        throw new NotImplementedException();
+    }
+
+    private void Device_DeviceRemoved(object sender, MediaDeviceEventArgs e)
+    {
+        Device.DeviceRemoved -= Device_DeviceRemoved;
+        Device.DeviceReset -= Device_DeviceReset;
+        Device.ObjectAdded -= Device_ObjectAdded;
+        Device.ObjectRemoved -= Device_ObjectRemoved;
+        Device.ObjectUpdated -= Device_ObjectUpdated;
+        _container.Devices.Remove(this);
+    }
 }

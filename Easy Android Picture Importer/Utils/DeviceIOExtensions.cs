@@ -12,7 +12,7 @@ public static class DeviceIOExtensions
         if (root == null)
             return null;
 
-        if(path.Length == 0)
+        if (path.Length == 0)
             return root;
 
         string subDir = path.Split(@"\")[0];

@@ -4,6 +4,10 @@
              xmlns:local="clr-namespace:EasyAndroidPictureImporter"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <Style TargetType="GridSplitter" >
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="VerticalAlignment" Value="Stretch" />
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
     </Application.Resources>
 </Application>

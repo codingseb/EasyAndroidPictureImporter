@@ -9,15 +9,15 @@
         xmlns:media="clr-namespace:MediaDevices;assembly=MediaDevices"
         mc:Ignorable="d"
         Title="Easy Android Media Importer" 
-        Height="450" 
-        Width="800"
+        Height="600" 
+        Width="1000"
         Icon="/img/Icon.png"
         DataContext="{di:DIResolve vm:MainViewModel}"
         d:DataContext="{d:DesignInstance Type=vm:MainViewModel}" >
-    <AutoGrid Columns="Auto,10,*" Rows="*" MinWidth="200">
+    <AutoGrid Columns="200,10,*" Rows="*" MinWidth="200">
         <ListBox x:Name="DevicesListBox"
                  SelectedIndex="0"
-                 ItemsSource="{Binding AndroidDevices}"
+                 ItemsSource="{Binding Devices}"
                  SelectedItem="{Binding SelectedDevice, Mode=TwoWay}">
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="vm:DeviceViewModel">
@@ -28,26 +28,60 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <GridSplitter VerticalAlignment="Stretch"
-                      HorizontalAlignment="Stretch"
-                      Background="Transparent"/>
-        <GroupBox DataContext="{Binding SelectedDevice}"
-                  Padding="0,5">
-            <GroupBox.Header>
-                <MultiBinding Converter="{StringFormatMultiBindingConverter Format='{}{0} - Battery : {1}%'}" 
-                              FallbackValue="No Device selected">
-                    <Binding Path="Name" />
-                    <Binding Path="BatteryLevel" />
-                    <Binding Path="Device" />
-                </MultiBinding>
-            </GroupBox.Header>
-            <ListBox ItemsSource="{Binding Directories}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding Name}" />
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+        <GridSplitter/>
+        <GroupBox Padding="0,5,0,0">
+            <GroupBox.Style>
+                <Style TargetType="GroupBox">
+                    <Setter Property="Header" Value="No Device Selected" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding SelectedDevice, Converter={IsNullToBoolConverter}}" Value="False">
+                            <Setter Property="Header" >
+                                <Setter.Value>
+                                    <MultiBinding Converter="{StringFormatMultiBindingConverter Format='{}{0} - Battery : {1}%'}" >
+                                        <Binding Path="SelectedDevice.Name" />
+                                        <Binding Path="SelectedDevice.BatteryLevel" />
+                                    </MultiBinding>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </GroupBox.Style>
+            <AutoGrid Columns="*,10,2*,10,200" 
+                      RowHeight="*"
+                      DataContext="{Binding SelectedDevice}">
+                <ListBox ItemsSource="{Binding Directories}"
+                         SelectedValue="{Binding SelectedDirectory}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="vm:DeviceDirectoryViewModel">
+                            <TextBlock Text="{Binding DirectoryInfo.Name}" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <GridSplitter />
+                <ListBox DataContext="{Binding SelectedDirectory}"
+                    ItemsSource="{Binding Files}"
+                         SelectedValue="{Binding SelectedFile}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="vm:FileViewModel">
+                            <DockPanel>
+                                <!--<Image Source="{Binding FileInfo}" Width="20" Height="20" />-->
+                                <CheckBox Content="{Binding FileInfo.Name}"
+                                      IsChecked="{Binding IsChecked}"
+                                          VerticalAlignment="Center"/>
+                            </DockPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <GridSplitter />
+                <StackPanel DataContext="{Binding SelectedDirectory.SelectedFile}"
+                            VerticalAlignment="Center">
+                    <TextBox TextWrapping="Wrap"
+                             IsReadOnly="True"
+                             BorderThickness="0"
+                             Text="{Binding FileInfo.FullName, Mode=OneWay}" />
+                </StackPanel>
+            </AutoGrid>
         </GroupBox>
     </AutoGrid>
 </Window>

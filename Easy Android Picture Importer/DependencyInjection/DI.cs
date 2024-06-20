@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Autofac.Core.Resolving.Pipeline;
 using EasyAndroidPictureImporter.DependencyInjection.Middlewares;
+using EasyAndroidPictureImporter.Utils;
 
 namespace EasyAndroidPictureImporter.DependencyInjection;
 
@@ -24,19 +25,25 @@ public static class DI
         {
             args.ComponentRegistration.PipelineBuilding += (_, pipeline) =>
             {
-                //pipeline.Use(new OnActivationCallInitMiddleware());
-                pipeline.Use(new ConfigurableResolveMiddleware(PipelinePhase.Activation, context =>
-                {
-                    if(context.Instance is IInitializable initializable)
-                    {
-                        initializable.Init();
-                    }
-                }));
+                pipeline.Use(new OnActivationCallInitMiddleware());
+                //pipeline.Use(new ConfigurableResolveMiddleware(PipelinePhase.Activation, context =>
+                //{
+                //    if(context.Instance is IInitializable initializable)
+                //    {
+                //        initializable.Init();
+                //    }
+                //}));
             };
         };
 
         // Register types here
+
+        builder.RegisterType<MediaDeviceComparer>()
+            .AsSelf()
+            .SingleInstance();
+
         builder.RegisterViewModels();
+
         return builder.Build();
     }
 }
