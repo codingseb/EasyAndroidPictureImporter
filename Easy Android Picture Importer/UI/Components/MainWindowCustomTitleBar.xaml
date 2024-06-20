@@ -52,6 +52,8 @@
             </Style.Triggers>
         </Style>
         <Style TargetType="local:SystemButton" BasedOn="{StaticResource {x:Type Button}}" >
+            <Setter Property="Focusable" Value="False" />
+            <Setter Property="IsTabStop" Value="False" />
             <Style.Triggers>
                 <Trigger Property="SpecialIsHover" Value="True">
                     <Setter Property="Background" Value="LightGray" />
@@ -103,14 +105,13 @@
                         ToolTip="{Tr ShowConfigButtonToolTip}" >
                     <fa:FontAwesome Icon="Solid_Gear" />
                 </Button>
-                <Button Command="SystemCommands.MinimizeWindowCommand"
-                        ToolTip="{Tr Minimize}"
-                        Focusable="False">
+                <local:SystemButton Command="SystemCommands.MinimizeWindowCommand"
+                                    x:Name="MinimizeButton"
+                                    ToolTip="{Tr Minimize}">
                     <Path Data="F1M3,8L13,8 13,7 3,7z" />
-                </Button>
+                </local:SystemButton>
                 <local:SystemButton Command="SystemCommands.MaximizeWindowCommand"
-                        Focusable="False"
-                        x:Name="MaximizeWindowButton">
+                                    x:Name="MaximizeWindowButton">
                     <Path>
                         <Path.Style>
                             <Style TargetType="Path" BasedOn="{StaticResource {x:Type Path}}" >
@@ -126,12 +127,15 @@
                         </Path.Style>
                     </Path>
                 </local:SystemButton>
-                <Button Command="SystemCommands.CloseWindowCommand"
-                        ToolTip="{Tr Exit}"
-                        Focusable="False">
+                <local:SystemButton Command="SystemCommands.CloseWindowCommand"
+                                    x:Name="ExitButton"
+                                    ToolTip="{Tr Exit}">
                     <Button.Style>
-                        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}" >
+                        <Style TargetType="local:SystemButton" BasedOn="{StaticResource {x:Type local:SystemButton}}" >
                             <Style.Triggers>
+                                <Trigger Property="SpecialIsHover" Value="True" >
+                                    <Setter Property="Background" Value="Red" />
+                                </Trigger>
                                 <Trigger Property="IsMouseOver" Value="True" >
                                     <Setter Property="Background" Value="Red" />
                                 </Trigger>
@@ -149,7 +153,7 @@
                             </Style>
                         </Path.Style>
                     </Path>
-                </Button>
+                </local:SystemButton>
             </StackPanel>
             <TextBlock Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"
                        d:Text="Easy Android Picture Importer - 1.0.0.0"
