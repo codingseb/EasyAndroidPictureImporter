@@ -11,7 +11,7 @@ public class DeviceViewModel
     : ViewModelBase
 {
     private readonly MainViewModel _container;
-    private Configuration _configuration;
+    private readonly Configuration _configuration;
 
     public DeviceViewModel(MediaDevice device, MainViewModel container, Configuration configuration)
     {
