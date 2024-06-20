@@ -29,7 +29,7 @@
                     Command="{di:DIResolve commands:ShowConfigCommand}" />
     </Window.InputBindings>
     <WindowChrome.WindowChrome>
-        <WindowChrome CaptionHeight="27"                      
+        <WindowChrome CaptionHeight="{Binding Source={x:Static SystemParameters.WindowCaptionHeight}, Converter={conv:Pixel2ScreenConverter}}"                      
                       ResizeBorderThickness="5"/>
     </WindowChrome.WindowChrome>
     <DockPanel>
@@ -43,7 +43,7 @@
             </Style>
         </DockPanel.Style>
         <uicomp:MainWindowCustomTitleBar DockPanel.Dock="Top"
-                                         Height="32"
+                                         Height="{Binding Source={x:Static SystemParameters.WindowCaptionHeight}, Converter={conv:Pixel2ScreenConverter}}"
                                          x:Name="TitleBar"/>
 
         <uicomp:StatusBar DockPanel.Dock="Bottom"/>

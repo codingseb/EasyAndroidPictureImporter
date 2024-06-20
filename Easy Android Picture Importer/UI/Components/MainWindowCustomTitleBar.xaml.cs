@@ -46,7 +46,7 @@ public partial class MainWindowCustomTitleBar : UserControl
                     {
                         MaximizeWindowButton.SpecialIsHover = false;
                     }
-
+                    
                     rect = new Rect(MinimizeButton.PointToScreen(
                         new Point()),
                         new Size(MinimizeButton.ActualWidth, MinimizeButton.ActualWidth));
