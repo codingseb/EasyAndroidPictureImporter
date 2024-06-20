@@ -21,6 +21,11 @@ public class FileViewModel(MediaFileInfo fileInfo, DirectoryViewModel directory)
 
     public bool IsSelected { get; set; }
 
+    public void OnIsSelectedChanged()
+    {
+        Directory.NotifyPropertyChanged(nameof(DirectoryViewModel.IsSelectedFilesCount));
+    }
+
     public void OnIsCheckedChanged()
     {
         Directory?.UpdateIsCheckedCount();

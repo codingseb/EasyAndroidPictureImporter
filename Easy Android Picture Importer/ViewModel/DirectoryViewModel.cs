@@ -24,9 +24,11 @@ public class DirectoryViewModel(MediaDirectoryInfo mediaDirectoryInfo)
         }
     }
 
-    public int FilesCount => files?.Count ?? 0;
+    public int FilesCount => Files?.Count ?? 0;
 
-    public int IsCheckedFilesCount => files?.Count(f => f.IsChecked) ?? 0;
+    public int IsCheckedFilesCount => Files?.Count(f => f.IsChecked) ?? 0;
+
+    public int IsSelectedFilesCount => Files?.Count(f => f.IsSelected) ?? 0;
 
     bool notifyIsChecked = true;
     public void UpdateIsCheckedCount()

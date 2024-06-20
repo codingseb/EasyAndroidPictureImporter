@@ -1,4 +1,5 @@
 ﻿using EasyAndroidPictureImporter.Interop;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -83,7 +84,7 @@ public partial class MainWindowCustomTitleBar : UserControl
 
     private void UserControl_Loaded(object sender, RoutedEventArgs e)
     {
-        if(firstLoad)
+        if(firstLoad && !DesignerProperties.GetIsInDesignMode(this))
         {
             var handle = new WindowInteropHelper(OwnerWindow).Handle;
             var source = HwndSource.FromHwnd(handle);

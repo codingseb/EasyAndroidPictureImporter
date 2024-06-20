@@ -23,14 +23,6 @@ public partial class MainWindow : Window
         Title += " - " + version;
     }
 
-    private void DockPanel_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-    {
-        if(sender is FrameworkElement frameworkElement)
-        {
-            FilesDataGrid.SelectedValue = frameworkElement.DataContext;
-        }
-    }
-
     private void CloseWindowExecuted(object sender, ExecutedRoutedEventArgs e)
     {
         Close();

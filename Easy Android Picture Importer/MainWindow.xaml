@@ -1,4 +1,4 @@
-<Window x:Class="EasyAndroidPictureImporter.MainWindow"
+﻿<Window x:Class="EasyAndroidPictureImporter.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -46,12 +46,7 @@
                                          Height="32"
                                          x:Name="TitleBar"/>
 
-        <StatusBar DockPanel.Dock="Bottom"
-                   Background="WhiteSmoke">
-            <StatusBarItem Content="{Tr NbrOfFiles, ModelBinding={Binding SelectedDevice.SelectedDirectory.FilesCount}}" />
-            <StatusBarItem Content="{Tr NbrOfIsCheckedFiles, ModelBinding={Binding SelectedDevice.SelectedDirectory.IsCheckedFilesCount}}" />
-            <StatusBarItem Content="{Tr NbrOfIsSelectedFiles, ModelBinding={Binding SelectedItems.Count, ElementName=FilesDataGrid}}" />
-        </StatusBar>
+        <uicomp:StatusBar DockPanel.Dock="Bottom"/>
 
         <GroupBox Padding="0,5,0,0">
             <GroupBox.Style>
@@ -78,272 +73,22 @@
                 <AutoGrid Columns="200,10,*,10,200" 
                       RowHeight="*"
                       DataContext="{Binding SelectedDevice}">
-                    <Grid>
-                        <ListBox ItemsSource="{Binding Directories}"
-                                 IsEnabled="{Binding DataContext.IsImporting, RelativeSource={RelativeSource AncestorType=Window}, Converter={BoolReverseConverter}}"
-                                 SelectedValue="{Binding SelectedDirectory}">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate DataType="vm:DeviceDirectoryViewModel">
-                                    <TextBlock Text="{Binding DirectoryInfo.Name}" />
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                        <uicomp:LoadingPanel Visibility="{Binding Directories, Converter={IsNullToVisibilityConverter IsNullValue=Visible, IsNotNullValue=Collapsed}}"/>
-                    </Grid>
+                    
+                    <uicomp:DirectorySelectionPanel />
+                    
                     <GridSplitter />
-                    <DockPanel>
-                        <Grid>
-                            <DataGrid x:Name="FilesDataGrid" 
-                                 IsEnabled="{Binding DataContext.IsImporting, RelativeSource={RelativeSource AncestorType=Window}, Converter={BoolReverseConverter}}"
-                                 DataContext="{Binding SelectedDirectory}"
-                                 ItemsSource="{Binding Files}"
-                                 SelectionUnit="FullRow"
-                                 Background="Transparent"
-                                 AutoGenerateColumns="False"
-                                 CanUserAddRows="False"
-                                 CanUserDeleteRows="False"
-                                 CanUserResizeRows="False"
-                                 HeadersVisibility="Column"
-                                 VerticalGridLinesBrush="Transparent"
-                                 HorizontalGridLinesBrush="Transparent"
-                                 IsReadOnly="True"
-                                 SelectedValue="{Binding SelectedFile}"
-                                 VirtualizingStackPanel.VirtualizationMode="Standard">
-                                <DataGrid.RowStyle>
-                                    <Style TargetType="{x:Type DataGridRow}">
-                                        <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                        <Setter Property="ContextMenu">
-                                            <Setter.Value>
-                                                <ContextMenu>
-                                                    <MenuItem Header="{Tr CheckSelectedFiles}"
-                                                              Command="{Binding Directory.CheckSelectedFilesCommand}"/>
-                                                    <MenuItem Header="{Tr UncheckSelectedFiles}"
-                                                              Command="{Binding Directory.UncheckSelectedFilesCommand}"/>
-                                                    <MenuItem Header="{Tr ToggleCheckSelectedFiles}"
-                                                              Command="{Binding Directory.ToggleIsCheckOfSelectedFilesCommand}"/>
-                                                </ContextMenu>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </Style>
-                                </DataGrid.RowStyle>
-                                <DataGrid.InputBindings>
-                                    <MouseBinding Gesture="LeftDoubleClick" Command="{Binding OpenSelectedFileCommand}" />
-                                    <KeyBinding Gesture="Enter" Command="{Binding OpenSelectedFileCommand}" />
-                                    <KeyBinding Gesture="Space" Command="{Binding ToggleIsCheckOfSelectedFilesCommand}" />
-                                </DataGrid.InputBindings>
-                                <DataGrid.Columns>
-                                    <DataGridTemplateColumn CanUserResize="False">
-                                        <DataGridTemplateColumn.Header>
-                                            <CheckBox DockPanel.Dock="Top"
-                                              IsChecked="{Binding DataContext.CheckOrUnCheckAllfiles, RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
-                                        </DataGridTemplateColumn.Header>
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                      VerticalContentAlignment="Center"
-                                                      Margin="4,0"/>
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
-                                    <DataGridTemplateColumn>
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <Image Source="{Binding Converter={conv:FileViewModelToIconConverter}}" />
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
-                                    <DataGridTextColumn Binding="{Binding FileInfo.Name}"
-                                                    Width="250"
-                                                    Header="{Tr Name}" />
-                                    <DataGridTextColumn Binding="{Binding Modification}"
-                                                Header="{Tr Modification}" />
-                                    <DataGridTextColumn Binding="{Binding SizeInKB}"
-                                                Header="{Tr Size}"
-                                                Width="60">
-                                        <DataGridTextColumn.ElementStyle>
-                                            <Style TargetType="TextBlock">
-                                                <Setter Property="HorizontalAlignment" Value="Right" />
-                                            </Style>
-                                        </DataGridTextColumn.ElementStyle>
-                                    </DataGridTextColumn>
-                                </DataGrid.Columns>
-                            </DataGrid>
-                            <!--<Border Background="{DynamicResource ZoneHidderBackground}"
-                                    DataContext="{di:DIResolve vm:MainViewModel}"
-                                    Visibility="{Binding IsProgressing, Converter={CustomBoolToVisibilityConverter}}" />-->
-                            <uicomp:LoadingPanel Visibility="{Binding SelectedDirectory.Files, Converter={IsNullToVisibilityConverter IsNullValue=Visible, IsNotNullValue=Collapsed}}" />
-                        </Grid>
-                    </DockPanel>
+
+                    <uicomp:FileSelectionPanel />
+
                     <GridSplitter />
+                    
                     <AutoGrid Rows="*,Auto" Columns="*">
-                        <GroupBox Header="{Tr Preview}"
-                                  Padding="0,5">
-                            <StackPanel DataContext="{Binding SelectedDirectory.SelectedFile}">
-                                <StackPanel.Resources>
-                                    <Style TargetType="Label">
-                                        <Setter Property="Padding" Value="0,3" />
-                                    </Style>
-                                </StackPanel.Resources>
-                                <Image Source="{Binding Converter={conv:FileViewModelToImagePreviewConverter}}" 
-                                       Stretch="Uniform"
-                                       x:Name="ThumbnailImage"/>
-                                <Label Content="{Tr 'Name'}"
-                                       FontWeight="Bold"/>
-                                <TextBox TextWrapping="Wrap"
-                                         IsReadOnly="True"
-                                         BorderBrush="LightGray"
-                                         Text="{Binding FileInfo.Name, Mode=OneWay}" >
-                                    <TextBox.Resources>
-                                        <Style TargetType="Border">
-                                            <Setter Property="CornerRadius" Value="2" />
-                                        </Style>
-                                    </TextBox.Resources>
-                                </TextBox>
-                                <Label Content="{Tr 'FullPath'}"
-                                       FontWeight="Bold"/>
-                                <TextBox TextWrapping="Wrap"
-                                         IsReadOnly="True"
-                                         BorderBrush="LightGray"
-                                         Text="{Binding FileInfo.FullName, Mode=OneWay}" >
-                                    <TextBox.Resources>
-                                        <Style TargetType="Border">
-                                            <Setter Property="CornerRadius" Value="2" />
-                                        </Style>
-                                    </TextBox.Resources>
-                                </TextBox>
-                            </StackPanel>
-                        </GroupBox>
-                        <StackPanelEx DataContext="{di:DIResolve vm:MainViewModel}"
-                                      d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
-                                      MarginBetweenChildren="5"
-                                      Margin="0,5">
-                            <TextBlock Text="{Binding ImportState}"
-                                       HorizontalAlignment="Center"
-                                       Visibility="{Binding IsImporting, Converter={CustomBoolToVisibilityConverter}}"/>
-                            <ProgressBar Maximum="{Binding ImportMax}" 
-                                         Value="{Binding ImportProgress}"
-                                         Margin="0"
-                                         Height="6"
-                                         Visibility="{Binding IsImporting, Converter={CustomBoolToVisibilityConverter}}">
-                                <ProgressBar.Resources>
-                                    <Style TargetType="Border" >
-                                        <Setter Property="CornerRadius" Value="3" />
-                                    </Style>
-                                    <Style TargetType="Rectangle" >
-                                        <Setter Property="RadiusX" Value="3" />
-                                        <Setter Property="RadiusY" Value="3" />
-                                        <Setter Property="Margin" Value="1" />
-                                    </Style>
-                                </ProgressBar.Resources>
-                            </ProgressBar>
-                            <Button x:Name="ImportButton" 
-                                Content="{Tr Import}"
-                                Command="{Binding ImportCheckedFilesCommand}"
-                                Padding="10"
-                                Foreground="WhiteSmoke"
-                                FontWeight="Bold"
-                                Visibility="{Binding IsImporting, Converter={CustomBoolToVisibilityConverter FalseValue=Visible, TrueValue=Collapsed}}"
-                                BorderBrush="Transparent">
-                                <Button.IsEnabled>
-                                    <MultiBinding Converter="{BoolMultiBindingAndConditionConverter}">
-                                        <Binding Path="SelectedDevice.SelectedDirectory.IsCheckedFilesCount" 
-                                             Converter="{IntToBoolConverter FalseValue=0, BiggerThanTrueValue=0, DefaultValue=False}"
-                                             FallbackValue="False" />
-                                        <Binding Path="IsImporting" Converter="{BoolReverseConverter}" />
-                                    </MultiBinding>
-                                </Button.IsEnabled>
-                                <Button.Style>
-                                    <Style TargetType="Button">
-                                        <Setter Property="Background" Value="#34A853" />
-                                        <Setter Property="Template">
-                                            <Setter.Value>
-                                                <ControlTemplate TargetType="{x:Type Button}">
-                                                    <Border x:Name="Border" 
-                                                        Background="{TemplateBinding Background}"
-                                                        Padding="{TemplateBinding Padding}"
-                                                        BorderBrush="{TemplateBinding BorderBrush}">
-                                                        <Label Content="{TemplateBinding Content}"
-                                                           x:Name="Label"
-                                                           Padding="0"
-                                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
-                                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                                           Foreground="{TemplateBinding Foreground}"/>
-                                                    </Border>
-                                                    <ControlTemplate.Triggers>
-                                                        <Trigger Property="IsMouseOver" Value="True">
-                                                            <Setter Property="Background" Value="#3fce65" TargetName="Border" />
-                                                            <!--<Setter Property="Background" Value="#4bf478" TargetName="Border" />-->
-                                                            <Setter Property="Foreground" Value="Black" TargetName="Label" />
-                                                        </Trigger>
-                                                        <Trigger Property="IsEnabled" Value="False">
-                                                            <Setter Property="Background" Value="WhiteSmoke" TargetName="Border" />
-                                                            <Setter Property="Foreground" Value="Gray" TargetName="Label" />
-                                                        </Trigger>
-                                                    </ControlTemplate.Triggers>
-                                                </ControlTemplate>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </Style>
-                                </Button.Style>
-                                <Button.Resources>
-                                    <Style TargetType="Border">
-                                        <Setter Property="CornerRadius" Value="4" />
-                                        <Setter Property="BorderThickness" Value="0" />
-                                    </Style>
-                                </Button.Resources>
-                            </Button>
-                            <Button x:Name="CancelButton"
-                                IsCancel="True"
-                                Content="{Tr Cancel}"
-                                Command="{Binding CancelImportCommand}"
-                                Padding="10"
-                                Foreground="WhiteSmoke"
-                                FontWeight="Bold"
-                                Visibility="{Binding IsImporting, Converter={CustomBoolToVisibilityConverter}}"
-                                BorderBrush="Transparent">
-                                <Button.Style>
-                                    <Style TargetType="Button">
-                                        <Setter Property="Background" Value="#ea4335" />
-                                        <Setter Property="Template">
-                                            <Setter.Value>
-                                                <ControlTemplate TargetType="{x:Type Button}">
-                                                    <Border x:Name="Border" 
-                                                        Background="{TemplateBinding Background}"
-                                                        Padding="{TemplateBinding Padding}"
-                                                        BorderBrush="{TemplateBinding BorderBrush}">
-                                                        <Label Content="{TemplateBinding Content}"
-                                                           x:Name="Label"
-                                                           Padding="0"
-                                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
-                                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                                           Foreground="{TemplateBinding Foreground}"/>
-                                                    </Border>
-                                                    <ControlTemplate.Triggers>
-                                                        <Trigger Property="IsMouseOver" Value="True">
-                                                            <Setter Property="Background" Value="#ff6339" TargetName="Border" />
-                                                            <!--<Setter Property="Background" Value="#4bf478" TargetName="Border" />-->
-                                                            <Setter Property="Foreground" Value="Black" TargetName="Label" />
-                                                        </Trigger>
-                                                        <Trigger Property="IsEnabled" Value="False">
-                                                            <Setter Property="Background" Value="WhiteSmoke" TargetName="Border" />
-                                                            <Setter Property="Foreground" Value="Gray" TargetName="Label" />
-                                                        </Trigger>
-                                                    </ControlTemplate.Triggers>
-                                                </ControlTemplate>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </Style>
-                                </Button.Style>
-                                <Button.Resources>
-                                    <Style TargetType="Border">
-                                        <Setter Property="CornerRadius" Value="4" />
-                                        <Setter Property="BorderThickness" Value="0" />
-                                    </Style>
-                                </Button.Resources>
-                            </Button>
-                        </StackPanelEx>
+                        <uicomp:PreviewPanel />
+                        <uicomp:ActionsAndProgressPanel />
                     </AutoGrid>
+                    
                 </AutoGrid>
+
             </DockPanel>
         </GroupBox>
     </DockPanel>

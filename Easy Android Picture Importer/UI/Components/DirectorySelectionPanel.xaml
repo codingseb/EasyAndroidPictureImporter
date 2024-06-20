@@ -1,0 +1,25 @@
+﻿<UserControl x:Class="EasyAndroidPictureImporter.UI.Components.DirectorySelectionPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:EasyAndroidPictureImporter.UI.Components"
+             xmlns:di="clr-namespace:EasyAndroidPictureImporter.DependencyInjection"
+             xmlns:vm="clr-namespace:EasyAndroidPictureImporter.ViewModel"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" 
+             d:DesignWidth="200"
+             d:DataContext="{d:DesignInstance Type=vm:DeviceViewModel}">
+    <Grid>
+        <ListBox ItemsSource="{Binding Directories}"
+                 IsEnabled="{Binding DataContext.IsImporting, RelativeSource={RelativeSource AncestorType=Window}, Converter={BoolReverseConverter}}"
+                 SelectedValue="{Binding SelectedDirectory}">
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="vm:DeviceDirectoryViewModel">
+                    <TextBlock Text="{Binding DirectoryInfo.Name}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <local:LoadingPanel Visibility="{Binding Directories, Converter={IsNullToVisibilityConverter IsNullValue=Visible, IsNotNullValue=Collapsed}}"/>
+    </Grid>
+</UserControl>

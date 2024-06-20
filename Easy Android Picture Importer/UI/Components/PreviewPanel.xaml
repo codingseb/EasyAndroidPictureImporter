@@ -1,0 +1,52 @@
+﻿<UserControl x:Class="EasyAndroidPictureImporter.UI.Components.PreviewPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:EasyAndroidPictureImporter.UI.Components"
+             xmlns:di="clr-namespace:EasyAndroidPictureImporter.DependencyInjection"
+             xmlns:vm="clr-namespace:EasyAndroidPictureImporter.ViewModel"
+             xmlns:conv="clr-namespace:EasyAndroidPictureImporter.Helpers.Converters"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
+             d:DesignHeight="450" 
+             d:DesignWidth="200">
+    <GroupBox Header="{Tr Preview}"
+              Padding="0,5">
+        <StackPanel DataContext="{Binding SelectedDirectory.SelectedFile}"
+                    Visibility="{Binding Converter={IsNullToVisibilityConverter}}">
+            <StackPanel.Resources>
+                <Style TargetType="Label">
+                    <Setter Property="Padding" Value="0,3" />
+                </Style>
+            </StackPanel.Resources>
+            <Image Source="{Binding Converter={conv:FileViewModelToImagePreviewConverter}}" 
+                   Stretch="Uniform"
+                   x:Name="ThumbnailImage"/>
+            <Label Content="{Tr 'Name'}"
+                   FontWeight="Bold"/>
+            <TextBox TextWrapping="Wrap"
+                     IsReadOnly="True"
+                     BorderBrush="LightGray"
+                     Text="{Binding FileInfo.Name, Mode=OneWay}" >
+                <TextBox.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="2" />
+                    </Style>
+                </TextBox.Resources>
+            </TextBox>
+            <Label Content="{Tr 'FullPath'}"
+                   FontWeight="Bold"/>
+            <TextBox TextWrapping="Wrap"
+                     IsReadOnly="True"
+                     BorderBrush="LightGray"
+                     Text="{Binding FileInfo.FullName, Mode=OneWay}" >
+                <TextBox.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="2" />
+                    </Style>
+                </TextBox.Resources>
+            </TextBox>
+        </StackPanel>
+    </GroupBox>
+</UserControl>

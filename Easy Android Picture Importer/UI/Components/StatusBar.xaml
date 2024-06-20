@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="EasyAndroidPictureImporter.UI.Components.StatusBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:EasyAndroidPictureImporter.UI.Components"
+             xmlns:di="clr-namespace:EasyAndroidPictureImporter.DependencyInjection"
+             xmlns:vm="clr-namespace:EasyAndroidPictureImporter.ViewModel" 
+             xmlns:conv="clr-namespace:EasyAndroidPictureImporter.Helpers.Converters"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             mc:Ignorable="d" 
+             d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance Type=vm:MainViewModel}">
+    <UserControl.Resources>
+        <sys:Int32 x:Key="Int_0">0</sys:Int32>
+    </UserControl.Resources>
+    <StatusBar Background="WhiteSmoke">
+        <StatusBarItem Content="{Tr NbrOfFiles, ModelBinding={Binding SelectedDevice.SelectedDirectory.FilesCount, FallbackValue={StaticResource Int_0}}}" />
+        <StatusBarItem Content="{Tr NbrOfIsCheckedFiles, ModelBinding={Binding SelectedDevice.SelectedDirectory.IsCheckedFilesCount, FallbackValue={StaticResource Int_0}}}" />
+        <StatusBarItem Content="{Tr NbrOfIsSelectedFiles, ModelBinding={Binding SelectedDevice.SelectedDirectory.IsSelectedFilesCount, FallbackValue={StaticResource Int_0}}}" />
+    </StatusBar>
+</UserControl>
