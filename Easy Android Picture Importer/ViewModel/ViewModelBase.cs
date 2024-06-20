@@ -16,24 +16,4 @@ public class ViewModelBase : INotifyPropertyChanged
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
-
-    /// <summary>
-    /// To notify that a property has changed on the specified object
-    /// </summary>
-    /// <param name="sender">The object containing the property that changed</param>
-    /// <param name="propertyName">The name of the property that changed</param>
-    public virtual void NotifyPropertyChanged(object sender, string propertyName)
-    {
-        PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(propertyName));
-    }
-
-    /// <summary>
-    /// To notify that a property has changed on the specified object
-    /// </summary>
-    /// <param name="sender">The object containing the property that changed</param>
-    /// <param name="e">The event args of the change</param>
-    public virtual void NotifyPropertyChanged(object sender, PropertyChangedEventArgs e)
-    {
-        PropertyChanged?.Invoke(sender, e);
-    }
 }
