@@ -49,9 +49,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="lang\Localization.loc.json">
+    <Content Include="lang\**">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    </Content>
   </ItemGroup>
 
 </Project>
