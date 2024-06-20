@@ -48,7 +48,11 @@ public class DeviceViewModel
             MediaDirectoryInfo dcim = root?.GetDirectoryIfExists("dcim");
 
             if (dcim != null)
-                list.AddRange(dcim.EnumerateDirectories().Where(directory => !directory.Name.StartsWith('.')));
+            {
+                list.AddRange(dcim.EnumerateDirectories()
+                    .Where(directory => !directory.Name.StartsWith('.')
+                    && directory.EnumerateFileSystemInfos().Any()));
+            }
 
             MediaDirectoryInfo whatsapp = root?.GetDirectoryIfExists(@"Android\media\com.whatsapp\WhatsApp\Media");
 

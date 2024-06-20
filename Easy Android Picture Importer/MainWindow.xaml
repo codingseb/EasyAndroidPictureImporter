@@ -6,11 +6,12 @@
         xmlns:local="clr-namespace:EasyAndroidPictureImporter" 
         xmlns:di="clr-namespace:EasyAndroidPictureImporter.DependencyInjection"
         xmlns:vm="clr-namespace:EasyAndroidPictureImporter.ViewModel"
+        xmlns:conv="clr-namespace:EasyAndroidPictureImporter.Helpers.Converters"
         xmlns:media="clr-namespace:MediaDevices;assembly=MediaDevices"
         mc:Ignorable="d"
         Title="Easy Android Media Importer" 
         Height="600" 
-        Width="1000"
+        Width="1400"
         Icon="/img/Icon.png"
         DataContext="{di:DIResolve vm:MainViewModel}"
         d:DataContext="{d:DesignInstance Type=vm:MainViewModel}" >
@@ -47,7 +48,7 @@
                     </Style.Triggers>
                 </Style>
             </GroupBox.Style>
-            <AutoGrid Columns="*,10,2*,10,200" 
+            <AutoGrid Columns="200,10,*,10,200" 
                       RowHeight="*"
                       DataContext="{Binding SelectedDevice}">
                 <ListBox ItemsSource="{Binding Directories}"
@@ -59,23 +60,64 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
                 <GridSplitter />
-                <ListBox DataContext="{Binding SelectedDirectory}"
-                    ItemsSource="{Binding Files}"
+                <DockPanel>
+                    <CheckBox DockPanel.Dock="Top"
+                              Margin="2"
+                              Content="(De)Check all"
+                              IsChecked="{Binding SelectedDirectory.CheckOrUnCheckAllfiles}"/>
+                    <DataGrid x:Name="FilesListBox" 
+                         DataContext="{Binding SelectedDirectory}"
+                         ItemsSource="{Binding Files}"
+                         SelectionUnit="FullRow"
+                         Background="Transparent"
+                         AutoGenerateColumns="False"
+                         CanUserAddRows="False"
+                         CanUserDeleteRows="False"
+                         CanUserResizeRows="False"
+                         HeadersVisibility="Column"
+                         VerticalGridLinesBrush="LightGray"
+                         HorizontalGridLinesBrush="LightGray"
+                         IsReadOnly="True"
                          SelectedValue="{Binding SelectedFile}">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate DataType="vm:FileViewModel">
-                            <DockPanel>
-                                <!--<Image Source="{Binding FileInfo}" Width="20" Height="20" />-->
-                                <CheckBox Content="{Binding FileInfo.Name}"
-                                      IsChecked="{Binding IsChecked}"
-                                          VerticalAlignment="Center"/>
-                            </DockPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+                        <DataGrid.InputBindings>
+                            <MouseBinding Gesture="LeftDoubleClick" Command="{Binding OpenSelectedFileCommand}" />
+                            <KeyBinding Gesture="Enter" Command="{Binding OpenSelectedFileCommand}" />
+                        </DataGrid.InputBindings>
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox IsChecked="{Binding IsChecked}"
+                                                  VerticalContentAlignment="Center"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Image Source="{Binding Converter={conv:FileViewModelToIconConverter}}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Binding="{Binding FileInfo.Name}"
+                                                Header="Name" />
+                            <DataGridTextColumn Binding="{Binding Converter={conv:FileViewModelToSizeWithUnitConverter}}"
+                                                Header="Size" >
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Right" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Binding="{Binding FileInfo.LastWriteTime}"
+                                                Header="Modification" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
                 <GridSplitter />
                 <StackPanel DataContext="{Binding SelectedDirectory.SelectedFile}"
                             VerticalAlignment="Center">
+                    <Image Source="{Binding Converter={conv:FileViewModelToImagePreviewConverter}}" Stretch="Uniform" />
                     <TextBox TextWrapping="Wrap"
                              IsReadOnly="True"
                              BorderThickness="0"

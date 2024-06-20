@@ -20,4 +20,12 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
     }
+
+    private void DockPanel_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+    {
+        if(sender is FrameworkElement frameworkElement)
+        {
+            FilesListBox.SelectedValue = frameworkElement.DataContext;
+        }
+    }
 }
