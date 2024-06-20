@@ -1,4 +1,4 @@
-﻿using CodingSeb.Localization;
+using CodingSeb.Localization;
 
 namespace EasyAndroidPictureImporter.ViewModel;
 
@@ -9,4 +9,6 @@ public class Configuration : ViewModelBase
         get => Loc.Instance.CurrentLanguage;
         set => Loc.Instance.CurrentLanguage = value;
     }
+
+    public bool ShowThumbnailsInPlaceOfIconInGrid { get; set; }
 }

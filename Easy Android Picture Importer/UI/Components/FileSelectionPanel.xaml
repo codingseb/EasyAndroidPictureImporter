@@ -6,6 +6,7 @@
              xmlns:conv="clr-namespace:EasyAndroidPictureImporter.Helpers.Converters"
              xmlns:local="clr-namespace:EasyAndroidPictureImporter.UI.Components"
              xmlns:vm="clr-namespace:EasyAndroidPictureImporter.ViewModel"
+             xmlns:di="clr-namespace:EasyAndroidPictureImporter.DependencyInjection"
              d:DataContext="{d:DesignInstance Type=vm:DeviceViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -61,10 +62,11 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn>
+                <DataGridTemplateColumn CanUserResize="False"
+                                        Width="{Binding ShowThumbnailsInPlaceOfIconInGrid, Source={di:DIResolve vm:Configuration}, Converter={BoolToObjectConverter FalseValue=16, TrueValue=128}}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Image Source="{Binding Converter={conv:FileViewModelToIconConverter}}" />
+                            <Image Source="{Binding ThumbnailOrIcon}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

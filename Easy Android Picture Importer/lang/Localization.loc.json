@@ -15,7 +15,11 @@
     "en": "_Language",
     "fr": "_Langue"
   },
-  "Device": {
+  "ShowThumbnailsInPlaceOfIconInGrid": {
+    "en": "Show thumbnails in files grid",
+    "fr": "Afficher les aperçus dans la grille des fichiers"
+  },
+  "_Device": {
     "en": "_Device",
     "fr": "_Appareil"
   },
@@ -43,9 +47,25 @@
     "en": "Size",
     "fr": "Taille"
   },
+  "SizeInBytes": {
+    "en": "{0} Bytes",
+    "fr": "{0} octets"
+  },
   "SizeInKB": {
     "en": "{0} KB",
     "fr": "{0} Ko"
+  },
+  "SizeInMB": {
+    "en": "{0} MB",
+    "fr": "{0} Mo"
+  },
+  "SizeInGB": {
+    "en": "{0} GB",
+    "fr": "{0} Go"
+  },
+  "SizeInTB": {
+    "en": "{0} TB",
+    "fr": "{0} To"
   },
   "CheckSelectedFiles": {
     "en": "Check selected files",
@@ -69,7 +89,7 @@
   },
   "NbrOfIsSelectedFiles": {
     "en": "{m} selected file | {m} selected files",
-    "fr": "{m} fichier sélectionné | {m} fichiers sélectionné"
+    "fr": "{m} fichier sélectionné | {m} fichiers sélectionnés"
   },
   "NbrOfIsCheckedFiles": {
     "en": "{m} checked file | {m} checked files",

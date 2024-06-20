@@ -33,5 +33,8 @@
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
+        <CheckBox Content="{Tr ShowThumbnailsInPlaceOfIconInGrid}"
+                  IsChecked="{Binding ShowThumbnailsInPlaceOfIconInGrid}" 
+                  Grid.ColumnSpan="2"/>
     </AutoGrid>
 </Window>

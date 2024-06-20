@@ -17,6 +17,11 @@ public partial class FileSelectionPanel : UserControl
     {
         if (sender is DataGrid dataGrid)
         {
+            if (dataGrid.DataContext is DirectoryViewModel directoryViewModel)
+            {
+                directoryViewModel.SelectedFiles = dataGrid.SelectedItems.Cast<FileViewModel>().ToList();
+            }
+
             foreach(var fileViewModel in dataGrid.Items.Cast<FileViewModel>())
             {
                 fileViewModel.IsSelected = false;

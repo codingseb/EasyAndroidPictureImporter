@@ -8,45 +8,83 @@
              xmlns:vm="clr-namespace:EasyAndroidPictureImporter.ViewModel"
              xmlns:conv="clr-namespace:EasyAndroidPictureImporter.Helpers.Converters"
              mc:Ignorable="d" 
-             d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
+             d:DataContext="{d:DesignInstance Type=vm:DeviceViewModel}"
              d:DesignHeight="450" 
              d:DesignWidth="200">
+    <UserControl.Resources>
+        <Style TargetType="Label">
+            <Setter Property="FontWeight" Value="Bold" />
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="IsReadOnly" Value="True" />
+            <Setter Property="BorderBrush" Value="LightGray" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+    </UserControl.Resources>
     <GroupBox Header="{Tr Preview}"
               Padding="0,5">
-        <StackPanel DataContext="{Binding SelectedDirectory.SelectedFile}"
-                    Visibility="{Binding Converter={IsNullToVisibilityConverter}}">
-            <StackPanel.Resources>
-                <Style TargetType="Label">
-                    <Setter Property="Padding" Value="0,3" />
-                </Style>
-            </StackPanel.Resources>
-            <Image Source="{Binding Converter={conv:FileViewModelToImagePreviewConverter}}" 
-                   Stretch="Uniform"
-                   x:Name="ThumbnailImage"/>
-            <Label Content="{Tr 'Name'}"
-                   FontWeight="Bold"/>
-            <TextBox TextWrapping="Wrap"
-                     IsReadOnly="True"
-                     BorderBrush="LightGray"
-                     Text="{Binding FileInfo.Name, Mode=OneWay}" >
-                <TextBox.Resources>
-                    <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="2" />
-                    </Style>
-                </TextBox.Resources>
-            </TextBox>
-            <Label Content="{Tr 'FullPath'}"
-                   FontWeight="Bold"/>
-            <TextBox TextWrapping="Wrap"
-                     IsReadOnly="True"
-                     BorderBrush="LightGray"
-                     Text="{Binding FileInfo.FullName, Mode=OneWay}" >
-                <TextBox.Resources>
-                    <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="2" />
-                    </Style>
-                </TextBox.Resources>
-            </TextBox>
-        </StackPanel>
+        <Grid>
+            <Grid Visibility="{Binding SelectedDirectory.IsSelectedFilesCount, FallbackValue=Collapsed, Converter={ChainingConverter Converter1={IntToBoolConverter DefaultValue=False, TrueValue=1}, Converter2={CustomBoolToVisibilityConverter}}}">
+                <StackPanel DataContext="{Binding SelectedDirectory.SelectedFile}">
+                    
+                    <Image Source="{Binding Converter={conv:FileViewModelToImagePreviewConverter}}" 
+                           Stretch="Uniform"
+                           x:Name="ThumbnailImage"/>
+
+                    <AutoGrid Columns="Auto,*">
+                        <Label Content="{Tr Name}" />
+                        <TextBox Text="{Binding FileInfo.Name, Mode=OneWay}" >
+                            <TextBox.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="2" />
+                                </Style>
+                            </TextBox.Resources>
+                        </TextBox>
+                        <Label Content="{Tr Size}" 
+                               FontWeight="Bold"/>
+                        <TextBox Text="{Binding Directory.SelectedFilesSizeSum, Mode=OneWay}" >
+                            <TextBox.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="2" />
+                                </Style>
+                            </TextBox.Resources>
+                        </TextBox>
+                    </AutoGrid>
+
+                    <Label Content="{Tr FullPath}"/>
+                    <TextBox Text="{Binding FileInfo.FullName, Mode=OneWay}" >
+                        <TextBox.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="2" />
+                            </Style>
+                        </TextBox.Resources>
+                    </TextBox>
+                    
+                </StackPanel>
+            </Grid>
+            <Grid Visibility="{Binding SelectedDirectory.IsSelectedFilesCount, FallbackValue=Collapsed, Converter={ChainingConverter Converter1={IntToBoolConverter DefaultValue=False, BiggerThanTrueValue=1}, Converter2={CustomBoolToVisibilityConverter}}}">
+                <StackPanel DataContext="{Binding SelectedDirectory}">
+                    
+                    <Label Content="{Tr NbrOfIsSelectedFiles, ModelBinding={Binding IsSelectedFilesCount}}" 
+                           HorizontalAlignment="Center"
+                           />
+                    
+                    <AutoGrid Columns="Auto,*">
+                        
+                        <Label Content="{Tr Size}" 
+                               FontWeight="Bold"/>
+                        <TextBox Text="{Binding SelectedFilesSizeSum, Mode=OneWay}" >
+                            <TextBox.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="2" />
+                                </Style>
+                            </TextBox.Resources>
+                        </TextBox>
+                        
+                    </AutoGrid>
+                </StackPanel>
+            </Grid>
+        </Grid>
     </GroupBox>
 </UserControl>
