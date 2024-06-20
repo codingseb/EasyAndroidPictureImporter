@@ -23,6 +23,14 @@
     "en": "Directories",
     "fr": "Dossier"
   },
+  "AddDirectory": {
+    "en": "Add a new directory",
+    "fr": "Ajouter un nouveau dossier"
+  },
+  "RemoveDirectory": {
+    "en": "Remove the directory",
+    "fr": "Enlever le dossier"
+  },
   "ShowTheDirectory": {
     "en": "Show The Directory",
     "fr": "Afficher le dossier"

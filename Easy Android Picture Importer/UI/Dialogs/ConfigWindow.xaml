@@ -6,7 +6,9 @@
         xmlns:local="clr-namespace:EasyAndroidPictureImporter.UI.Dialogs"
         xmlns:di="clr-namespace:EasyAndroidPictureImporter.DependencyInjection"
         xmlns:vm="clr-namespace:EasyAndroidPictureImporter.ViewModel"
-        xmlns:loc="clr-namespace:CodingSeb.Localization;assembly=CodingSeb.Localization" xmlns:conv="clr-namespace:EasyAndroidPictureImporter.Helpers.Converters"
+        xmlns:loc="clr-namespace:CodingSeb.Localization;assembly=CodingSeb.Localization" 
+        xmlns:conv="clr-namespace:EasyAndroidPictureImporter.Helpers.Converters"
+        xmlns:fa="http://schemas.fontawesome.com/icons/fonts"
         mc:Ignorable="d"
         Title="{Tr Configuration}" 
         WindowStyle="ToolWindow"
@@ -37,10 +39,38 @@
         <Label/>
         <CheckBox Content="{Tr ShowThumbnailsInPlaceOfIconInGrid}"
                   IsChecked="{Binding ShowThumbnailsInPlaceOfIconInGrid}" />
-        <Label Content="{Tr Directories}" />
+        <StackPanel>
+            <Label Content="{Tr Directories}" />
+            <Grid>
+                <Border Background="{Binding ElementName=AddButton, Path=IsMouseOver, Converter={BoolToBrushConverter TrueValue=Black, FalseValue=WhiteSmoke}}"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Width="15"
+                        Height="15"/>
+                <fa:FontAwesome Icon="Solid_SquarePlus"
+                            x:Name="AddButton"
+                            HorizontalAlignment="Center"
+                            FontSize="24"
+                            ToolTip="{Tr AddDirectory}">
+                <fa:FontAwesome.Style>
+                    <Style TargetType="fa:FontAwesome">
+                        <Setter Property="Foreground" Value="#34A853" />
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Foreground" Value="#3fce65" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </fa:FontAwesome.Style>
+            </fa:FontAwesome>
+            </Grid>
+        </StackPanel>
         <DataGrid ItemsSource="{Binding FavoriteDirectories}"
+                  HeadersVisibility="Column"
                   AutoGenerateColumns="False"
-                  CanUserAddRows="False">
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  CanUserResizeRows="False">
             <DataGrid.Resources>
                 <Style TargetType="CheckBox">
                     <Setter Property="VerticalAlignment" Value="Center" />
@@ -64,15 +94,39 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTextColumn Binding="{Binding RootPath, UpdateSourceTrigger=PropertyChanged , Mode=TwoWay}"
-                                    Header="{Tr FavDirPath}"/>
+                                    Header="{Tr FavDirPath}" 
+                                    CanUserResize="False"/>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Border Background="{Binding ElementName=RemoveButton, Path=IsMouseOver, Converter={BoolToBrushConverter TrueValue=Black, FalseValue=WhiteSmoke}}"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        Width="15"
+                                        Height="15"/>
+                                <fa:FontAwesome Icon="Solid_SquareMinus"
+                                                x:Name="RemoveButton"
+                                            HorizontalAlignment="Center"
+                                            FontSize="24"
+                                            ToolTip="{Tr RemoveDirectory}"
+                                            VerticalAlignment="Center">
+                                    <fa:FontAwesome.Style>
+                                        <Style TargetType="fa:FontAwesome">
+                                            <Setter Property="Foreground" Value="#ea4335" />
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Foreground" Value="#ff6339" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </fa:FontAwesome.Style>
+                                </fa:FontAwesome>
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate DataType="vm:FavoriteDirectoryViewModel">
-                    <AutoGrid Columns="Auto,Auto,*"
-                              ChildMargin="3,0">
-                    </AutoGrid>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
         </DataGrid>
     </AutoGrid>
 </Window>

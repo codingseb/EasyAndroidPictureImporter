@@ -57,19 +57,22 @@ public class DeviceViewModel
 
                 foreach(var favoriteDirectory in _configuration.FavoriteDirectories)
                 {
-                    MediaDirectoryInfo mediaDirectoryInfo = root?.GetDirectoryIfExists(favoriteDirectory.RootPath);
-
-                    if (mediaDirectoryInfo != null)
+                    if (favoriteDirectory.Show)
                     {
-                        if(favoriteDirectory.AddEachChildAsFavorite)
+                        MediaDirectoryInfo mediaDirectoryInfo = root?.GetDirectoryIfExists(favoriteDirectory.RootPath);
+
+                        if (mediaDirectoryInfo != null)
                         {
-                            list.AddRange(mediaDirectoryInfo.EnumerateDirectories()
-                                .Where(directory => !directory.Name.StartsWith('.')
-                                    && directory.EnumerateFileSystemInfos().Any()));
-                        }
-                        else if(mediaDirectoryInfo.EnumerateFileSystemInfos().Any())
-                        {
-                            list.Add(mediaDirectoryInfo);
+                            if (favoriteDirectory.AddEachChildAsFavorite)
+                            {
+                                list.AddRange(mediaDirectoryInfo.EnumerateDirectories()
+                                    .Where(directory => !directory.Name.StartsWith('.')
+                                        && directory.EnumerateFileSystemInfos().Any()));
+                            }
+                            else if (mediaDirectoryInfo.EnumerateFileSystemInfos().Any())
+                            {
+                                list.Add(mediaDirectoryInfo);
+                            }
                         }
                     }
                 }
