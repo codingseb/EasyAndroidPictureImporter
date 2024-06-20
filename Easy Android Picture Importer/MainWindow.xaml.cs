@@ -36,33 +36,6 @@ public partial class MainWindow : Window
         Close();
     }
 
-    private void Window_Closed(object sender, EventArgs e)
-    {
-        ThumbnailImage.Source = null;
-
-        try
-        {
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-        }
-        catch { }
-
-        foreach (string oldFiles in Directory.GetFiles(PathUtils.TempPath))
-        {
-            try
-            {
-                File.Delete(oldFiles);
-            }
-            catch { }
-        }
-
-        try
-        {
-            Directory.Delete(PathUtils.TempPath, true);
-        }
-        catch { }
-    }
-
     private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
     {
         if (e.Key == Key.Enter

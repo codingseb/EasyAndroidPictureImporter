@@ -36,4 +36,31 @@ public partial class App : Application
 
         base.OnStartup(e);
     }
+
+    protected override void OnExit(ExitEventArgs e)
+    {
+        try
+        {
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+        }
+        catch { }
+
+        foreach (string oldFiles in Directory.GetFiles(PathUtils.TempPath))
+        {
+            try
+            {
+                File.Delete(oldFiles);
+            }
+            catch { }
+        }
+
+        try
+        {
+            Directory.Delete(PathUtils.TempPath, true);
+        }
+        catch { }
+
+        base.OnExit(e);
+    }
 }

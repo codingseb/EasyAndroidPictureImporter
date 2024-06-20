@@ -1,4 +1,4 @@
-﻿<Window x:Class="EasyAndroidPictureImporter.MainWindow"
+<Window x:Class="EasyAndroidPictureImporter.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -15,7 +15,6 @@
         WindowStartupLocation="CenterScreen"
         Height="900" 
         Width="1500"
-        Closed="Window_Closed"
         PreviewKeyDown="Window_PreviewKeyDown"
         Icon="/img/Icon.png"
         Background="{DynamicResource BaseBackgroundBrush}"
