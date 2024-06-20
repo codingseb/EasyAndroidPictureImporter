@@ -39,6 +39,8 @@ public partial class MainWindowCustomTitleBar : UserControl
                     if (rect.Contains(new Point(x, y)))
                     {
                         MaximizeWindowButton.SpecialIsHover = true;
+                        MinimizeButton.SpecialIsHover = false;
+                        ExitButton.SpecialIsHover = false;
                         handled = true;
                         return new IntPtr(HTMAXBUTTON);
                     }
@@ -53,7 +55,9 @@ public partial class MainWindowCustomTitleBar : UserControl
 
                     if (rect.Contains(new Point(x, y)))
                     {
+                        MaximizeWindowButton.SpecialIsHover = false;
                         MinimizeButton.SpecialIsHover = true;
+                        ExitButton.SpecialIsHover = false;
                         handled = true;
                         return new IntPtr(HTMINBUTTON);
                     }

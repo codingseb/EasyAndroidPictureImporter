@@ -16,6 +16,7 @@
         
         <sys:Int32 x:Key="Int_0">0</sys:Int32>
 
+        <sys:Double x:Key="CustomWindowCaptionHeight">32</sys:Double>
 
     </Application.Resources>
 </Application>

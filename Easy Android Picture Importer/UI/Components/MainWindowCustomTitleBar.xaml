@@ -73,12 +73,13 @@
                     d:Source="/img/Icon.png" 
                     Width="16"
                     Height="16"
-                    Margin="8,0,3,0" 
+                    Margin="8,0,3,0"
                     WindowChrome.IsHitTestVisibleInChrome="True" 
                     MouseLeftButtonDown="Image_MouseLeftButtonDown"/>
             <Label Content="{Tr TextId='_Device'}"
                    Target="{Binding ElementName=DevicesComboBox}"
-                   VerticalAlignment="Center"/>
+                   VerticalAlignment="Center"
+                   Padding="3,0"/>
             <ComboBox x:Name="DevicesComboBox"
                       WindowChrome.IsHitTestVisibleInChrome="True" 
                       MinWidth="200"
