@@ -22,4 +22,12 @@ public partial class ConfigWindow : Window
     {
         InitializeComponent();
     }
+
+    private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.Escape)
+        {
+            Close();
+        }
+    }
 }

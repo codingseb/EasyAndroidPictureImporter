@@ -26,7 +26,7 @@ public class DirectoryViewModel(MediaDirectoryInfo mediaDirectoryInfo)
 
     public async void ScanForFile()
     {
-        await Task.Run(async () =>
+        await Task.Run(() =>
         {
             files = DirectoryInfo
                 .EnumerateFiles("*.*", System.IO.SearchOption.AllDirectories)

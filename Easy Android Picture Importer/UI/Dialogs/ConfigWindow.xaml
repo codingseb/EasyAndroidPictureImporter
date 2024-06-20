@@ -4,9 +4,27 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EasyAndroidPictureImporter.UI.Dialogs"
+        xmlns:di="clr-namespace:EasyAndroidPictureImporter.DependencyInjection"
+        xmlns:vm="clr-namespace:EasyAndroidPictureImporter.ViewModel"
+        xmlns:loc="clr-namespace:CodingSeb.Localization;assembly=CodingSeb.Localization" xmlns:conv="clr-namespace:EasyAndroidPictureImporter.Helpers.Converters"
         mc:Ignorable="d"
-        Title="ConfigWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="Configuration" 
+        WindowStyle="ToolWindow"
+        Background="{StaticResource BaseBackgroundBrush}"
+        Icon="/img/Icon.png"
+        SizeToContent="Height" 
+        Width="800"
+        PreviewKeyDown="Window_PreviewKeyDown"
+        WindowStartupLocation="CenterOwner"
+        DataContext="{di:DIResolve vm:Configuration}"
+        d:DataContext="{d:DesignInstance Type=vm:Configuration}">
+    <AutoGrid Columns="Auto,*"
+              Margin="5"
+              ChildMargin="2">
+        <Label Content="_Language"
+               Target="{Binding ElementName=LangugeComboBox}"/>
+        <ComboBox x:Name="LangugeComboBox"
+                  ItemsSource="{Binding Source={x:Static loc:Loc.AvailableLanguages}}"
+                  SelectedItem="{Binding CurrentLanguage, Source={x:Static loc:Loc.Instance}}"/>
+    </AutoGrid>
 </Window>

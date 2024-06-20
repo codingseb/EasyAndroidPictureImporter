@@ -57,6 +57,8 @@ public class MainViewModel(MediaDeviceComparer mediaDeviceComparer)
 
                 if(selectAtTheEnd && Devices.Any())
                     SelectedDevice = Devices.First();
+                else if(!Devices.Contains(SelectedDevice))
+                    SelectedDevice = null;
             }
         }
     }

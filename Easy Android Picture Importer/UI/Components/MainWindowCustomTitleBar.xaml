@@ -48,7 +48,7 @@
                     Margin="8,0,3,0" 
                     WindowChrome.IsHitTestVisibleInChrome="True" 
                     MouseLeftButtonDown="Image_MouseLeftButtonDown"/>
-            <Label Content="_Device"
+            <Label Content="{Tr TextId=Device}"
                    Target="{Binding ElementName=DevicesComboBox}"
                    VerticalAlignment="Center"/>
             <ComboBox x:Name="DevicesComboBox"

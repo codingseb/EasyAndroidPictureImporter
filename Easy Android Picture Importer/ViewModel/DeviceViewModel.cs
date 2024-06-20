@@ -47,7 +47,7 @@ public class DeviceViewModel
 
     public async void ScanForDirectories()
     {
-        await Task.Run(async () =>
+        await Task.Run(() =>
         {
             List<MediaDirectoryInfo> list = [];
 

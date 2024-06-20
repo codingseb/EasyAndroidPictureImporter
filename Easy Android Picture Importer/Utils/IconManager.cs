@@ -14,9 +14,9 @@ namespace EasyAndroidPictureImporter.Utils;
 /// </summary>
 public static class IconManager
 {
-    private static readonly Dictionary<string, ImageSource> _smallIconCache = new Dictionary<string, ImageSource>();
-    private static readonly Dictionary<string, ImageSource> _largeIconCache = new Dictionary<string, ImageSource>();
-    
+    private static readonly Dictionary<string, ImageSource> _smallIconCache = [];
+    private static readonly Dictionary<string, ImageSource> _largeIconCache = [];
+
     /// <summary>
     /// Get an icon for a given filename
     /// </summary>
@@ -29,8 +29,7 @@ public static class IconManager
         if (extension == null)
             return null;
         var cache = large ? _largeIconCache : _smallIconCache;
-        ImageSource icon;
-        if (cache.TryGetValue(extension, out icon))
+        if (cache.TryGetValue(extension, out ImageSource icon))
             return icon;
         icon = IconReader.GetFileIcon(fileName, large ? IconReader.IconSize.Large : IconReader.IconSize.Small, false).ToImageSource();
         cache.Add(extension, icon);
@@ -40,7 +39,8 @@ public static class IconManager
     /// <summary>
     /// http://stackoverflow.com/a/6580799/1943849
     /// </summary>
-    static ImageSource ToImageSource(this Icon icon)
+    /// <param name="icon"></param>
+    private static BitmapSource ToImageSource(this Icon icon)
     {
         var imageSource = Imaging.CreateBitmapSourceFromHIcon(
             icon.Handle,
@@ -48,13 +48,14 @@ public static class IconManager
             BitmapSizeOptions.FromEmptyOptions());
         return imageSource;
     }
+
     /// <summary>
     /// Provides static methods to read system icons for both folders and files.
     /// </summary>
     /// <example>
-    /// <code>IconReader.GetFileIcon("c:\\general.xls");</code>
+    /// <c>IconReader.GetFileIcon("c:\\general.xls");</c>
     /// </example>
-    static class IconReader
+    private static class IconReader
     {
         /// <summary>
         /// Options to specify the size of icons to return.
@@ -94,7 +95,7 @@ public static class IconManager
                 flags);
             // Copy (clone) the returned icon to a new object, thus allowing us to clean-up properly
             var icon = (Icon)Icon.FromHandle(shfi.hIcon).Clone();
-            User32.DestroyIcon(shfi.hIcon);     // Cleanup
+            _ = User32.DestroyIcon(shfi.hIcon);     // Cleanup
             return icon;
         }
     }
@@ -123,7 +124,8 @@ public static class IconManager
         public const uint ShgfiSmallicon = 0x000000001;     // get small icon
         public const uint ShgfiUsefileattributes = 0x000000010;     // use passed dwFileAttribute
         public const uint FileAttributeNormal = 0x00000080;
-        [DllImport("Shell32.dll")]
+
+        [DllImport("Shell32.dll", CharSet = CharSet.Unicode)]
         public static extern IntPtr SHGetFileInfo(
             string pszPath,
             uint dwFileAttributes,

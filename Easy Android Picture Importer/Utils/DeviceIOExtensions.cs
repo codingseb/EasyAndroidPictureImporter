@@ -19,7 +19,7 @@ public static class DeviceIOExtensions
 
         return root.EnumerateDirectories()
             .FirstOrDefault(directory => directory.Name.Equals(subDir, StringComparison.OrdinalIgnoreCase))
-            .GetDirectoryIfExists(path.Substring(subDir.Length).TrimStart('\\'));
+            .GetDirectoryIfExists(path[subDir.Length..].TrimStart('\\'));
     }
 
     public static bool ContainsOneOf(this string source, List<string> texts, StringComparison stringComparison = StringComparison.OrdinalIgnoreCase)

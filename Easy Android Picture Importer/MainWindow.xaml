@@ -16,6 +16,7 @@
         Height="900" 
         Width="1500"
         Icon="/img/Icon.png"
+        Background="{DynamicResource BaseBackgroundBrush}"
         DataContext="{di:DIResolve vm:MainViewModel}"
         d:DataContext="{d:DesignInstance Type=vm:MainViewModel}" >
     <Window.CommandBindings>
