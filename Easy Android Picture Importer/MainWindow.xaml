@@ -15,6 +15,8 @@
         WindowStartupLocation="CenterScreen"
         Height="900" 
         Width="1500"
+        Closed="Window_Closed"
+        PreviewKeyDown="Window_PreviewKeyDown"
         Icon="/img/Icon.png"
         Background="{DynamicResource BaseBackgroundBrush}"
         DataContext="{di:DIResolve vm:MainViewModel}"
@@ -178,7 +180,8 @@
                                     </Style>
                                 </StackPanel.Resources>
                                 <Image Source="{Binding Converter={conv:FileViewModelToImagePreviewConverter}}" 
-                                       Stretch="Uniform"/>
+                                       Stretch="Uniform"
+                                       x:Name="ThumbnailImage"/>
                                 <Label Content="{Tr 'Name'}"
                                        FontWeight="Bold"/>
                                 <TextBox TextWrapping="Wrap"
@@ -212,6 +215,22 @@
                             <TextBlock Text="{Binding ImportState}"
                                        HorizontalAlignment="Center"
                                        Visibility="{Binding IsImporting, Converter={CustomBoolToVisibilityConverter}}"/>
+                            <ProgressBar Maximum="{Binding ImportMax}" 
+                                         Value="{Binding ImportProgress}"
+                                         Margin="0"
+                                         Height="6"
+                                         Visibility="{Binding IsImporting, Converter={CustomBoolToVisibilityConverter}}">
+                                <ProgressBar.Resources>
+                                    <Style TargetType="Border" >
+                                        <Setter Property="CornerRadius" Value="3" />
+                                    </Style>
+                                    <Style TargetType="Rectangle" >
+                                        <Setter Property="RadiusX" Value="3" />
+                                        <Setter Property="RadiusY" Value="3" />
+                                        <Setter Property="Margin" Value="1" />
+                                    </Style>
+                                </ProgressBar.Resources>
+                            </ProgressBar>
                             <Button x:Name="ImportButton" 
                                 Content="{Tr Import}"
                                 Command="{Binding ImportCheckedFilesCommand}"

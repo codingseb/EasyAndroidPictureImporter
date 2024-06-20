@@ -72,6 +72,9 @@ public class MainViewModel(MediaDeviceComparer mediaDeviceComparer)
 
     public string ImportState { get; set; }
 
+    public int ImportProgress { get; set; }
+    public int ImportMax { get; set; }
+
     private bool stopImporting = false;
     private ICommand importCheckedFilesCommand;
     public ICommand ImportCheckedFilesCommand => importCheckedFilesCommand ??= new RelayCommand(_ => ImportCheckedFiles());
@@ -89,6 +92,8 @@ public class MainViewModel(MediaDeviceComparer mediaDeviceComparer)
             if (files?.Count > 0)
             {
                 var filesToCopy = files.FindAll(f => f.IsChecked);
+                ImportProgress = 0;
+                ImportMax = filesToCopy.Count;
                 ImportState = string.Format(Loc.Tr("ImportState"), 0, filesToCopy.Count);
 
                 var folderDialog = new OpenFolderDialog();
@@ -96,7 +101,6 @@ public class MainViewModel(MediaDeviceComparer mediaDeviceComparer)
                 if (folderDialog.ShowDialog(App.Current.MainWindow) == true)
                 {
                     var folderName = folderDialog.FolderName;
-
 
                     await Task.Run(async () =>
                     {
@@ -109,7 +113,8 @@ public class MainViewModel(MediaDeviceComparer mediaDeviceComparer)
                             if (stopImporting)
                                 return;
 
-                            ImportState = string.Format(Loc.Tr("ImportState"), i + 1, filesToCopy.Count);
+                            ImportProgress = i + 1;
+                            ImportState = string.Format(Loc.Tr("ImportState"), ImportProgress, ImportMax);
                             await Task.Delay(1);
                         }
                     });

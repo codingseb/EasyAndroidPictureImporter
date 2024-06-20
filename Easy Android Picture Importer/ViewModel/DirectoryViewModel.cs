@@ -1,4 +1,5 @@
-﻿using MediaDevices;
+﻿using EasyAndroidPictureImporter.Utils;
+using MediaDevices;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Input;
@@ -44,7 +45,7 @@ public class DirectoryViewModel(MediaDirectoryInfo mediaDirectoryInfo)
 
         IsScanning = true;
 
-        await Task.Run(() =>
+        await Task.Run(async () =>
         {
             files = DirectoryInfo
                 .EnumerateFiles("*.*", System.IO.SearchOption.AllDirectories)
@@ -52,6 +53,8 @@ public class DirectoryViewModel(MediaDirectoryInfo mediaDirectoryInfo)
                 .OrderByDescending(file => file.LastWriteTime)
                 .Select(fileInfo => new FileViewModel(fileInfo, this))
                 .ToList();
+
+            await Task.Delay(10);
 
             NotifyPropertyChanged(nameof(Files));
             NotifyPropertyChanged(nameof(FilesCount));
@@ -131,7 +134,9 @@ public class DirectoryViewModel(MediaDirectoryInfo mediaDirectoryInfo)
         if (SelectedFile == null)
             return;
 
-        string path = Path.Combine(Path.GetTempPath(), SelectedFile.FileInfo.Name);
+        Directory.CreateDirectory(PathUtils.TempPath);
+
+        string path = Path.Combine(PathUtils.TempPath, SelectedFile.FileInfo.Name);
 
         try
         {

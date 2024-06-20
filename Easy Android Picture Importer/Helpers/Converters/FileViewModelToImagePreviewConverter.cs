@@ -2,8 +2,10 @@
 using EasyAndroidPictureImporter.ViewModel;
 using System.Globalization;
 using System.IO;
+using System.Security.Policy;
 using System.Windows.Data;
 using System.Windows.Markup;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace EasyAndroidPictureImporter.Helpers.Converters;
@@ -20,25 +22,39 @@ public class FileViewModelToImagePreviewConverter : MarkupExtension, IValueConve
 
         if (value is FileViewModel fileViewModel)
         {
-            foreach (string oldFiles in Directory.GetFiles(Path.GetTempPath(), "EAPIThumbnail*.*"))
-            {
-                try
-                {
-                    File.Delete(oldFiles);
-                }
-                catch { }
-            }
+            Directory.CreateDirectory(PathUtils.TempPath);
 
-            string thumbnailPath = Path.Combine(Path.GetTempPath(), $"EAPIThumbnail_{fileViewModel.FileInfo.Name}");
+            string thumbnailPath = Path.Combine(PathUtils.TempPath, $"Thumbnail_{fileViewModel.FileInfo.Name}");
+
             try
             {
-                fileViewModel.FileInfo.CopyThumbnail(thumbnailPath, true);
+                if(!File.Exists(thumbnailPath))
+                    fileViewModel.FileInfo.CopyThumbnail(thumbnailPath, true);
             }
             catch { }
 
             if (new FileInfo(thumbnailPath).Length > 0)
             {
-                return thumbnailPath;
+                var bmp = new BitmapImage();
+
+                try
+                {
+                    using (var stream = new FileStream(thumbnailPath, FileMode.Open))
+                    {
+                        bmp.BeginInit();
+                        bmp.CacheOption = BitmapCacheOption.OnLoad;
+                        bmp.StreamSource = stream;
+                        bmp.EndInit();
+                        bmp.Freeze();
+                    }
+                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true);
+                }
+                catch
+                {
+                    return thumbnailPath;
+                }
+
+                return bmp;
             }
             else
             {

@@ -44,7 +44,7 @@ public class DeviceViewModel
 
     public async void ScanForDirectories()
     {
-        await Task.Run(() =>
+        await Task.Run(async () =>
         {
             try
             {
@@ -76,10 +76,12 @@ public class DeviceViewModel
                     .ToList();
             }
             catch { }
-
-            NotifyPropertyChanged(nameof(Directories));
-
-            SelectedDirectory = directories?.FirstOrDefault();
+            finally
+            {
+                await Task.Delay(10);
+                NotifyPropertyChanged(nameof(Directories));
+                SelectedDirectory = Directories?.FirstOrDefault();
+            }
         });
     }
 
