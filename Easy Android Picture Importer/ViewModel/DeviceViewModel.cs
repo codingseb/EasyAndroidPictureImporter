@@ -64,6 +64,13 @@ public class DeviceViewModel
                         && directory.EnumerateFileSystemInfos().Any()));
                 }
 
+                MediaDirectoryInfo download = root?.GetDirectoryIfExists("download");
+
+                if (download?.EnumerateFileSystemInfos().Any() == true)
+                {
+                    list.Add(download);
+                }
+
                 MediaDirectoryInfo whatsapp = root?.GetDirectoryIfExists(@"Android\media\com.whatsapp\WhatsApp\Media");
 
                 if (whatsapp != null)
