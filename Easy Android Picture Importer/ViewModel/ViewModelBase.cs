@@ -24,7 +24,7 @@ public class ViewModelBase : INotifyPropertyChanged
     /// <param name="propertyName">The name of the property that changed</param>
     public virtual void NotifyPropertyChanged(object sender, string propertyName)
     {
-        PropertyChanged(sender, new PropertyChangedEventArgs(propertyName));
+        PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(propertyName));
     }
 
     /// <summary>
@@ -34,6 +34,6 @@ public class ViewModelBase : INotifyPropertyChanged
     /// <param name="e">The event args of the change</param>
     public virtual void NotifyPropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        PropertyChanged(sender, e);
+        PropertyChanged?.Invoke(sender, e);
     }
 }
