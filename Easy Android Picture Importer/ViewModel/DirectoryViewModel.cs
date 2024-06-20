@@ -1,16 +1,16 @@
 ﻿using CodingSeb.Localization;
+using CommunityToolkit.Mvvm.Input;
 using EasyAndroidPictureImporter.Utils;
 using MediaDevices;
 using System.Diagnostics;
 using System.IO;
-using System.Windows.Input;
 
 namespace EasyAndroidPictureImporter.ViewModel;
 
-public class DirectoryViewModel(MediaDirectoryInfo mediaDirectoryInfo, Configuration configuration)
+public partial class DirectoryViewModel(MediaDirectoryInfo mediaDirectoryInfo, Configuration configuration)
     : ViewModelBase
 {
-    private Configuration _configuration = configuration;
+    private readonly Configuration _configuration = configuration;
 
     public MediaDirectoryInfo DirectoryInfo { get; } = mediaDirectoryInfo;
 
@@ -77,130 +77,119 @@ public class DirectoryViewModel(MediaDirectoryInfo mediaDirectoryInfo, Configura
     }
 
     bool notifyIsChecked = true;
-public void UpdateIsCheckedCount()
-{
-    if (notifyIsChecked)
+    public void UpdateIsCheckedCount()
     {
-        NotifyPropertyChanged(nameof(IsCheckedFilesCount));
-        CommandManager.InvalidateRequerySuggested();
-    }
-}
-
-public bool IsScanning { get; set; }
-public async void ScanForFile()
-{
-    if (IsScanning) return;
-
-    IsScanning = true;
-
-    await Task.Run(async () =>
-    {
-        files = DirectoryInfo
-            .EnumerateFiles("*.*", System.IO.SearchOption.AllDirectories)
-            .Where(file => file.Name?.StartsWith('.') == false)
-            .OrderByDescending(file => file.LastWriteTime)
-            .Select(fileInfo => new FileViewModel(fileInfo, this, _configuration))
-            .ToList();
-
-        await Task.Delay(10);
-
-        NotifyPropertyChanged(nameof(Files));
-        NotifyPropertyChanged(nameof(FilesCount));
-    });
-}
-
-private bool checkOrUnCheckAllfiles;
-public bool CheckOrUnCheckAllfiles
-{
-    get
-    {
-        return checkOrUnCheckAllfiles;
-    }
-
-    set
-    {
-        checkOrUnCheckAllfiles=value;
-        notifyIsChecked = false;
-        files.ForEach(fileViewModel => fileViewModel.IsChecked = value);
-        notifyIsChecked = true;
-        NotifyPropertyChanged(nameof(IsCheckedFilesCount));
-    }
-}
-
-public FileViewModel SelectedFile { get; set; }
-
-private ICommand toggleIsCheckOfSelectedFilesCommand;
-public ICommand ToggleIsCheckOfSelectedFilesCommand => toggleIsCheckOfSelectedFilesCommand ??= new RelayCommand(_ => ToggleIsCheckOfSelectedFiles());
-
-private void ToggleIsCheckOfSelectedFiles()
-{
-    if (files?.Count > 0)
-    {
-        foreach (var fileViewModel in files)
+        if (notifyIsChecked)
         {
-            if (fileViewModel.IsSelected)
-                fileViewModel.IsChecked = !fileViewModel.IsChecked;
+            NotifyPropertyChanged(nameof(IsCheckedFilesCount));
         }
     }
-}
 
-private ICommand checkSelectedFilesCommand;
-public ICommand CheckSelectedFilesCommand => checkSelectedFilesCommand ??= new RelayCommand(_ => CheckOfSelectedFiles());
-
-private void CheckOfSelectedFiles()
-{
-    if (files?.Count > 0)
+    public bool IsScanning { get; set; }
+    public async void ScanForFile()
     {
-        foreach (var fileViewModel in files)
+        if (IsScanning) return;
+
+        IsScanning = true;
+
+        await Task.Run(async () =>
         {
-            if (fileViewModel.IsSelected)
+            files = DirectoryInfo
+                .EnumerateFiles("*.*", System.IO.SearchOption.AllDirectories)
+                .Where(file => file.Name?.StartsWith('.') == false)
+                .OrderByDescending(file => file.LastWriteTime)
+                .Select(fileInfo => new FileViewModel(fileInfo, this, _configuration))
+                .ToList();
+
+            await Task.Delay(10);
+
+            NotifyPropertyChanged(nameof(Files));
+            NotifyPropertyChanged(nameof(FilesCount));
+        });
+    }
+
+    private bool checkOrUnCheckAllfiles;
+    public bool CheckOrUnCheckAllfiles
+    {
+        get
+        {
+            return checkOrUnCheckAllfiles;
+        }
+
+        set
+        {
+            checkOrUnCheckAllfiles=value;
+            notifyIsChecked = false;
+            files.ForEach(fileViewModel => fileViewModel.IsChecked = value);
+            notifyIsChecked = true;
+            NotifyPropertyChanged(nameof(IsCheckedFilesCount));
+        }
+    }
+
+    public FileViewModel SelectedFile { get; set; }
+
+    [RelayCommand]
+    private void ToggleIsCheckOfSelectedFiles()
+    {
+        if (files?.Count > 0)
+        {
+            foreach (var fileViewModel in files)
+            {
+                if (fileViewModel.IsSelected)
+                    fileViewModel.IsChecked = !fileViewModel.IsChecked;
+            }
+        }
+    }
+
+    [RelayCommand]
+    private void CheckSelectedFiles()
+    {
+        if (files?.Count > 0)
+        {
+            foreach (var fileViewModel in SelectedFiles)
+            {
                 fileViewModel.IsChecked = true;
+            }
         }
     }
-}
 
-private ICommand uncheckSelectedFilesCommand;
-public ICommand UncheckSelectedFilesCommand => uncheckSelectedFilesCommand ??= new RelayCommand(_ => UnCheckOfSelectedFiles());
-
-private void UnCheckOfSelectedFiles()
-{
-    if (files?.Count > 0)
+    [RelayCommand]
+    private void UncheckSelectedFiles()
     {
-        foreach (var fileViewModel in files)
+        if (files?.Count > 0)
         {
-            if (fileViewModel.IsSelected)
+            foreach (var fileViewModel in SelectedFiles)
+            {
                 fileViewModel.IsChecked = false;
+            }
         }
     }
-}
 
-private ICommand openSelectedFileCommand;
-public ICommand OpenSelectedFileCommand => openSelectedFileCommand ??= new RelayCommand(_ => OpenSelectedFile());
-
-public void OpenSelectedFile()
-{
-    if (SelectedFile == null)
-        return;
-
-    Directory.CreateDirectory(PathUtils.TempPath);
-
-    string path = Path.Combine(PathUtils.TempPath, SelectedFile.FileInfo.Name);
-
-    try
+    [RelayCommand]
+    public void OpenSelectedFile()
     {
-        SelectedFile.FileInfo.CopyTo(path, true);
-    }
-    catch { }
-    finally
-    {
-        if (File.Exists(path))
+        if (SelectedFile == null)
+            return;
+
+        Directory.CreateDirectory(PathUtils.TempPath);
+
+        string path = Path.Combine(PathUtils.TempPath, SelectedFile.FileInfo.Name);
+
+        try
         {
-            using Process fileopener = new();
+            SelectedFile.FileInfo.CopyTo(path, true);
+        }
+        catch { }
+        finally
+        {
+            if (File.Exists(path))
+            {
+                using Process fileopener = new();
 
-            fileopener.StartInfo.FileName = "explorer";
-            fileopener.StartInfo.Arguments = "\"" + path + "\"";
-            fileopener.Start();
+                fileopener.StartInfo.FileName = "explorer";
+                fileopener.StartInfo.Arguments = "\"" + path + "\"";
+                fileopener.Start();
+            }
         }
     }
-}
 }

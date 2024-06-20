@@ -62,7 +62,9 @@ public class PersistOnPropertyChangedMiddleware(string fileName = null, Action<o
 
     private void Obj_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if (!hasJsonIgnoreAttributeCache.TryGetValue(e.PropertyName, out bool hasJsonIgnoreAttribute))
+        bool hasJsonIgnoreAttribute = false;
+
+        if (e.PropertyName != null && !hasJsonIgnoreAttributeCache.TryGetValue(e.PropertyName, out hasJsonIgnoreAttribute))
         {
             hasJsonIgnoreAttribute=sender.GetType().GetProperty(e.PropertyName)?.GetCustomAttributes(true).OfType<JsonIgnoreAttribute>().Any() == true;
             hasJsonIgnoreAttributeCache[e.PropertyName] = hasJsonIgnoreAttribute;

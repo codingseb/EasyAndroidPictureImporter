@@ -30,4 +30,9 @@ public partial class ConfigWindow : Window
             Close();
         }
     }
+
+    private void Grid_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+    {
+
+    }
 }

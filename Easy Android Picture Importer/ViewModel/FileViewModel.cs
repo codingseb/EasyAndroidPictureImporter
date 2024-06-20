@@ -11,7 +11,7 @@ using System.Windows.Media.Imaging;
 
 namespace EasyAndroidPictureImporter.ViewModel;
 
-public class FileViewModel(MediaFileInfo fileInfo, DirectoryViewModel directory, Configuration configuration) 
+public class FileViewModel(MediaFileInfo fileInfo, DirectoryViewModel directory, Configuration configuration)
     : ViewModelBase
 {
     private Configuration _configuration = configuration;

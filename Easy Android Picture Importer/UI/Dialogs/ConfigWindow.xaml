@@ -41,29 +41,37 @@
                   IsChecked="{Binding ShowThumbnailsInPlaceOfIconInGrid}" />
         <StackPanel>
             <Label Content="{Tr Directories}" />
-            <Grid>
-                <Border Background="{Binding ElementName=AddButton, Path=IsMouseOver, Converter={BoolToBrushConverter TrueValue=Black, FalseValue=WhiteSmoke}}"
+            <Button HorizontalAlignment="Center"
+                    Command="{Binding AddNewFavoriteDirectoryCommand}">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <ContentPresenter />
+                    </ControlTemplate>
+                </Button.Template>
+                <Grid>
+                    <Border Background="{Binding ElementName=AddButton, Path=IsMouseOver, Converter={BoolToBrushConverter TrueValue=Black, FalseValue=WhiteSmoke}}"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Center"
                         Width="15"
                         Height="15"/>
-                <fa:FontAwesome Icon="Solid_SquarePlus"
+                    <fa:FontAwesome Icon="Solid_SquarePlus"
                             x:Name="AddButton"
                             HorizontalAlignment="Center"
                             FontSize="24"
                             ToolTip="{Tr AddDirectory}">
-                <fa:FontAwesome.Style>
-                    <Style TargetType="fa:FontAwesome">
-                        <Setter Property="Foreground" Value="#34A853" />
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Foreground" Value="#3fce65" />
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </fa:FontAwesome.Style>
-            </fa:FontAwesome>
-            </Grid>
+                        <fa:FontAwesome.Style>
+                            <Style TargetType="fa:FontAwesome">
+                                <Setter Property="Foreground" Value="#34A853" />
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Foreground" Value="#3fce65" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </fa:FontAwesome.Style>
+                    </fa:FontAwesome>
+                </Grid>
+            </Button>
         </StackPanel>
         <DataGrid ItemsSource="{Binding FavoriteDirectories}"
                   HeadersVisibility="Column"

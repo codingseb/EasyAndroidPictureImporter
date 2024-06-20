@@ -1,13 +1,21 @@
 using CodingSeb.Localization;
+using CommunityToolkit.Mvvm.Input;
+using Newtonsoft.Json;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace EasyAndroidPictureImporter.ViewModel;
 
 /// <summary>
 /// To store the configuration of the app
 /// </summary>
-public class Configuration : NotifyPropertyChangedOnChildsChanges
+public partial class Configuration : NotifyPropertyChangedOnChildsChanges
 {
+    public Configuration()
+    {
+        SetDefaultDirectories();
+    }
+
     /// <summary>
     /// The selected UI language
     /// </summary>
@@ -27,7 +35,14 @@ public class Configuration : NotifyPropertyChangedOnChildsChanges
     /// </summary>
     public ObservableCollection<FavoriteDirectoryViewModel> FavoriteDirectories { get; set; }
 
-    public Configuration()
+    [RelayCommand]
+    [property: JsonIgnore]
+    public void AddNewFavoriteDirectory()
+    {
+        FavoriteDirectories.Add(new FavoriteDirectoryViewModel(""));
+    }
+
+    public void SetDefaultDirectories()
     {
         FavoriteDirectories =
         [
