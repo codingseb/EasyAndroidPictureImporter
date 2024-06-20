@@ -33,9 +33,21 @@ public class DeviceViewModel
 
     public int BatteryLevel => Device.PowerLevel;
 
+    private List<DirectoryViewModel> directories;
     public List<DirectoryViewModel> Directories
     {
         get
+        {
+            if(directories == null)
+                ScanForDirectories();
+
+            return directories;
+        }
+    }
+
+    public async void ScanForDirectories()
+    {
+        await Task.Run(async () =>
         {
             List<MediaDirectoryInfo> list = [];
 
@@ -59,15 +71,15 @@ public class DeviceViewModel
                     && !directory.Name.StartsWith('.')));
             }
 
-            var result = list
+            directories = list
                 .OrderBy(directory => directory.Name)
                 .Select(directory => new DirectoryViewModel(directory))
                 .ToList();
 
-            SelectedDirectory = result.FirstOrDefault();
+            NotifyPropertyChanged(nameof(Directories));
+        });
 
-            return result;
-        }
+        SelectedDirectory = directories.FirstOrDefault();
     }
 
     public DirectoryViewModel SelectedDirectory { get; set; }

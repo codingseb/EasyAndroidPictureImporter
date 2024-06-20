@@ -3,7 +3,6 @@ using EasyAndroidPictureImporter.DependencyInjection;
 using EasyAndroidPictureImporter.Utils;
 using MediaDevices;
 using System.Collections.ObjectModel;
-using System.IO;
 
 namespace EasyAndroidPictureImporter.ViewModel;
 
@@ -33,10 +32,12 @@ public class MainViewModel(MediaDeviceComparer mediaDeviceComparer)
     /// </summary>
     public DeviceViewModel SelectedDevice { get; set; }
 
+    private bool selectAtTheEnd;
     private async void ScanForNewDevices()
     {
         while (true)
         {
+            selectAtTheEnd = SelectedDevice == null;
             await Task.Delay(1000);
             var newDevicesCollection = MediaDevice.GetDevices();
 
@@ -53,6 +54,9 @@ public class MainViewModel(MediaDeviceComparer mediaDeviceComparer)
                 }
 
                 _devices = newDevicesCollection;
+
+                if(selectAtTheEnd && Devices.Any())
+                    SelectedDevice = Devices.First();
             }
         }
     }

@@ -6,9 +6,11 @@
              xmlns:local="clr-namespace:EasyAndroidPictureImporter.UI.Components"
              xmlns:di="clr-namespace:EasyAndroidPictureImporter.DependencyInjection"
              xmlns:fa="http://schemas.fontawesome.com/icons/fonts"
+             xmlns:vm="clr-namespace:EasyAndroidPictureImporter.ViewModel"
              xmlns:commands="clr-namespace:EasyAndroidPictureImporter.Helpers.Commands"
              mc:Ignorable="d" 
-             d:DesignHeight="32" d:DesignWidth="1500">
+             d:DesignHeight="32" d:DesignWidth="1500"
+             DataContext="{di:DIResolve vm:MainViewModel}">
     <UserControl.CommandBindings>
         <CommandBinding Command="SystemCommands.MaximizeWindowCommand" Executed="MaximizeWindowExecuted"/>
         <CommandBinding Command="SystemCommands.MinimizeWindowCommand" Executed="MinimizeWindowExecuted"/>
@@ -16,6 +18,12 @@
     <UserControl.Resources>
         <Style TargetType="Menu">
             <Setter Property="Background" Value="Transparent" />
+        </Style>
+        <Style TargetType="Label">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="VerticalAlignment" Value="Center" />
         </Style>
         <Style TargetType="Button">
             <Setter Property="Width" Value="46" />
@@ -40,6 +48,24 @@
                     Margin="8,0,3,0" 
                     WindowChrome.IsHitTestVisibleInChrome="True" 
                     MouseLeftButtonDown="Image_MouseLeftButtonDown"/>
+            <Label Content="_Device"
+                   Target="{Binding ElementName=DevicesComboBox}"
+                   VerticalAlignment="Center"/>
+            <ComboBox x:Name="DevicesComboBox"
+                      WindowChrome.IsHitTestVisibleInChrome="True" 
+                      MinWidth="200"
+                      SelectedIndex="0"
+                      ItemsSource="{Binding Devices}"
+                      SelectedItem="{Binding SelectedDevice, Mode=TwoWay}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate DataType="vm:DeviceViewModel">
+                        <StackPanelEx Orientation="Horizontal">
+                            <TextBlock Text="{Binding Name}" FontWeight="Bold" />
+                            <!--<TextBlock Text="{Binding Description}" FontSize="8" />-->
+                        </StackPanelEx>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
             <StackPanel Orientation="Horizontal" 
                         DockPanel.Dock="Right">
                 <Button Command="{di:DIResolve commands:ShowConfigCommand}"

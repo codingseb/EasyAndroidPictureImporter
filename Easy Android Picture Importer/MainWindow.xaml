@@ -42,42 +42,28 @@
         </DockPanel.Style>
         <uicomp:MainWindowCustomTitleBar DockPanel.Dock="Top"
                                         Height="32"/>
-        <AutoGrid Columns="200,10,*" Rows="*" MinWidth="200">
-            <ListBox x:Name="DevicesListBox"
-                 SelectedIndex="0"
-                 ItemsSource="{Binding Devices}"
-                 SelectedItem="{Binding SelectedDevice, Mode=TwoWay}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate DataType="vm:DeviceViewModel">
-                        <StackPanel Margin="5,0">
-                            <TextBlock Text="{Binding Name}" FontWeight="Bold" />
-                            <TextBlock Text="{Binding Description}" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-            <GridSplitter/>
-            <GroupBox Padding="0,5,0,0">
-                <GroupBox.Style>
-                    <Style TargetType="GroupBox">
-                        <Setter Property="Header" Value="No Device Selected" />
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding SelectedDevice, Converter={IsNullToBoolConverter}}" Value="False">
-                                <Setter Property="Header" >
-                                    <Setter.Value>
-                                        <MultiBinding Converter="{StringFormatMultiBindingConverter Format='{}{0} - Battery : {1}%'}" >
-                                            <Binding Path="SelectedDevice.Name" />
-                                            <Binding Path="SelectedDevice.BatteryLevel" />
-                                        </MultiBinding>
-                                    </Setter.Value>
-                                </Setter>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </GroupBox.Style>
-                <AutoGrid Columns="200,10,*,10,200" 
+        <GroupBox Padding="0,5,0,0">
+            <GroupBox.Style>
+                <Style TargetType="GroupBox">
+                    <Setter Property="Header" Value="No Device Selected" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding SelectedDevice, Converter={IsNullToBoolConverter}}" Value="False">
+                            <Setter Property="Header" >
+                                <Setter.Value>
+                                    <MultiBinding Converter="{StringFormatMultiBindingConverter Format='{}{0} - Battery : {1}%'}" >
+                                        <Binding Path="SelectedDevice.Name" />
+                                        <Binding Path="SelectedDevice.BatteryLevel" />
+                                    </MultiBinding>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </GroupBox.Style>
+            <AutoGrid Columns="200,10,*,10,200" 
                       RowHeight="*"
                       DataContext="{Binding SelectedDevice}">
+                <Grid>
                     <ListBox ItemsSource="{Binding Directories}"
                          SelectedValue="{Binding SelectedDirectory}">
                         <ListBox.ItemTemplate>
@@ -86,8 +72,11 @@
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
-                    <GridSplitter />
-                    <DockPanel>
+                    <uicomp:LoadingPanel Visibility="{Binding Directories, Converter={IsNullToVisibilityConverter IsNullValue=Visible, IsNotNullValue=Collapsed}}"/>
+                </Grid>
+                <GridSplitter />
+                <DockPanel>
+                    <Grid>
                         <DataGrid x:Name="FilesListBox" 
                                  DataContext="{Binding SelectedDirectory}"
                                  ItemsSource="{Binding Files}"
@@ -98,7 +87,7 @@
                                  CanUserDeleteRows="False"
                                  CanUserResizeRows="False"
                                  HeadersVisibility="Column"
-                                 VerticalGridLinesBrush="LightGray"
+                                 VerticalGridLinesBrush="Transparent"
                                  HorizontalGridLinesBrush="LightGray"
                                  IsReadOnly="True"
                                  SelectedValue="{Binding SelectedFile}">
@@ -128,6 +117,7 @@
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
                                 <DataGridTextColumn Binding="{Binding FileInfo.Name}"
+                                                    Width="200"
                                                 Header="Name" />
                                 <DataGridTextColumn Binding="{Binding Converter={conv:FileViewModelToSizeWithUnitConverter}}"
                                                 Header="Size" >
@@ -141,18 +131,19 @@
                                                 Header="Modification" />
                             </DataGrid.Columns>
                         </DataGrid>
-                    </DockPanel>
-                    <GridSplitter />
-                    <StackPanel DataContext="{Binding SelectedDirectory.SelectedFile}"
+                        <uicomp:LoadingPanel Visibility="{Binding SelectedDirectory.Files, Converter={IsNullToVisibilityConverter IsNullValue=Visible, IsNotNullValue=Collapsed}}" />
+                    </Grid>
+                </DockPanel>
+                <GridSplitter />
+                <StackPanel DataContext="{Binding SelectedDirectory.SelectedFile}"
                             VerticalAlignment="Center">
-                        <Image Source="{Binding Converter={conv:FileViewModelToImagePreviewConverter}}" Stretch="Uniform" />
-                        <TextBox TextWrapping="Wrap"
+                    <Image Source="{Binding Converter={conv:FileViewModelToImagePreviewConverter}}" Stretch="Uniform" />
+                    <TextBox TextWrapping="Wrap"
                              IsReadOnly="True"
                              BorderThickness="0"
                              Text="{Binding FileInfo.FullName, Mode=OneWay}" />
-                    </StackPanel>
-                </AutoGrid>
-            </GroupBox>
-        </AutoGrid>
+                </StackPanel>
+            </AutoGrid>
+        </GroupBox>
     </DockPanel>
 </Window>

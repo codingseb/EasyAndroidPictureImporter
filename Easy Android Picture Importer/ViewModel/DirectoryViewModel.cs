@@ -17,13 +17,26 @@ public class DirectoryViewModel(MediaDirectoryInfo mediaDirectoryInfo)
     {
         get
         {
-            return files ??= DirectoryInfo
+            if(files == null)
+                ScanForFile();
+
+            return files;
+        }
+    }
+
+    public async void ScanForFile()
+    {
+        await Task.Run(async () =>
+        {
+            files = DirectoryInfo
                 .EnumerateFiles("*.*", System.IO.SearchOption.AllDirectories)
                 .Where(file => !file.Name.StartsWith('.'))
                 .OrderByDescending(file => file.LastWriteTime)
                 .Select(fileInfo => new FileViewModel(fileInfo))
                 .ToList();
-        }
+
+            NotifyPropertyChanged(nameof(Files));
+        });
     }
 
     private bool checkOrUnCheckAllfiles;
