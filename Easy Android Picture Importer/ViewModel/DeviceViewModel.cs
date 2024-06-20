@@ -78,9 +78,9 @@ public class DeviceViewModel
             catch { }
 
             NotifyPropertyChanged(nameof(Directories));
-        });
 
-        SelectedDirectory = directories.FirstOrDefault();
+            SelectedDirectory = directories?.FirstOrDefault();
+        });
     }
 
     public DirectoryViewModel SelectedDirectory { get; set; }

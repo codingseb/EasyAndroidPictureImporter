@@ -78,10 +78,12 @@
                     <fa:FontAwesome Icon="Solid_Gear" />
                 </Button>
                 <Button Command="SystemCommands.MinimizeWindowCommand"
-                        ToolTip="{Tr Minimize}">
+                        ToolTip="{Tr Minimize}"
+                        Focusable="False">
                     <Path Data="F1M3,8L13,8 13,7 3,7z" />
                 </Button>
-                <Button Command="SystemCommands.MaximizeWindowCommand">
+                <Button Command="SystemCommands.MaximizeWindowCommand"
+                        Focusable="False">
                     <Path>
                         <Path.Style>
                             <Style TargetType="Path" BasedOn="{StaticResource {x:Type Path}}" >
@@ -98,7 +100,8 @@
                     </Path>
                 </Button>
                 <Button Command="SystemCommands.CloseWindowCommand"
-                        ToolTip="{Tr Exit}">
+                        ToolTip="{Tr Exit}"
+                        Focusable="False">
                     <Button.Style>
                         <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}" >
                             <Setter Property="Template">

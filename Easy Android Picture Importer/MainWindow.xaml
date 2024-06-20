@@ -168,14 +168,157 @@
                         </Grid>
                     </DockPanel>
                     <GridSplitter />
-                    <StackPanel DataContext="{Binding SelectedDirectory.SelectedFile}"
-                            VerticalAlignment="Center">
-                        <Image Source="{Binding Converter={conv:FileViewModelToImagePreviewConverter}}" Stretch="Uniform" />
-                        <TextBox TextWrapping="Wrap"
-                             IsReadOnly="True"
-                             BorderThickness="0"
-                             Text="{Binding FileInfo.FullName, Mode=OneWay}" />
-                    </StackPanel>
+                    <AutoGrid Rows="*,Auto" Columns="*">
+                        <GroupBox Header="{Tr Preview}"
+                                  Padding="0,5">
+                            <StackPanel DataContext="{Binding SelectedDirectory.SelectedFile}">
+                                <StackPanel.Resources>
+                                    <Style TargetType="Label">
+                                        <Setter Property="Padding" Value="0,3" />
+                                    </Style>
+                                </StackPanel.Resources>
+                                <Image Source="{Binding Converter={conv:FileViewModelToImagePreviewConverter}}" 
+                                       Stretch="Uniform"/>
+                                <Label Content="{Tr 'Name'}"
+                                       FontWeight="Bold"/>
+                                <TextBox TextWrapping="Wrap"
+                                         IsReadOnly="True"
+                                         BorderBrush="LightGray"
+                                         Text="{Binding FileInfo.Name, Mode=OneWay}" >
+                                    <TextBox.Resources>
+                                        <Style TargetType="Border">
+                                            <Setter Property="CornerRadius" Value="2" />
+                                        </Style>
+                                    </TextBox.Resources>
+                                </TextBox>
+                                <Label Content="{Tr 'FullPath'}"
+                                       FontWeight="Bold"/>
+                                <TextBox TextWrapping="Wrap"
+                                         IsReadOnly="True"
+                                         BorderBrush="LightGray"
+                                         Text="{Binding FileInfo.FullName, Mode=OneWay}" >
+                                    <TextBox.Resources>
+                                        <Style TargetType="Border">
+                                            <Setter Property="CornerRadius" Value="2" />
+                                        </Style>
+                                    </TextBox.Resources>
+                                </TextBox>
+                            </StackPanel>
+                        </GroupBox>
+                        <StackPanelEx DataContext="{di:DIResolve vm:MainViewModel}"
+                                      d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
+                                      MarginBetweenChildren="5"
+                                      Margin="0,5">
+                            <TextBlock Text="{Binding ImportState}"
+                                       HorizontalAlignment="Center"
+                                       Visibility="{Binding IsImporting, Converter={CustomBoolToVisibilityConverter}}"/>
+                            <Button x:Name="ImportButton" 
+                                Content="{Tr Import}"
+                                Command="{Binding ImportCheckedFilesCommand}"
+                                Padding="10"
+                                Foreground="WhiteSmoke"
+                                FontWeight="Bold"
+                                Visibility="{Binding IsImporting, Converter={CustomBoolToVisibilityConverter FalseValue=Visible, TrueValue=Collapsed}}"
+                                BorderBrush="Transparent">
+                                <Button.IsEnabled>
+                                    <MultiBinding Converter="{BoolMultiBindingAndConditionConverter}">
+                                        <Binding Path="SelectedDevice.SelectedDirectory.IsCheckedFilesCount" 
+                                             Converter="{IntToBoolConverter FalseValue=0, BiggerThanTrueValue=0, DefaultValue=False}"
+                                             FallbackValue="False" />
+                                        <Binding Path="IsImporting" Converter="{BoolReverseConverter}" />
+                                    </MultiBinding>
+                                </Button.IsEnabled>
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Background" Value="#34A853" />
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type Button}">
+                                                    <Border x:Name="Border" 
+                                                        Background="{TemplateBinding Background}"
+                                                        Padding="{TemplateBinding Padding}"
+                                                        BorderBrush="{TemplateBinding BorderBrush}">
+                                                        <Label Content="{TemplateBinding Content}"
+                                                           x:Name="Label"
+                                                           Padding="0"
+                                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                           Foreground="{TemplateBinding Foreground}"/>
+                                                    </Border>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="Background" Value="#3fce65" TargetName="Border" />
+                                                            <!--<Setter Property="Background" Value="#4bf478" TargetName="Border" />-->
+                                                            <Setter Property="Foreground" Value="Black" TargetName="Label" />
+                                                        </Trigger>
+                                                        <Trigger Property="IsEnabled" Value="False">
+                                                            <Setter Property="Background" Value="WhiteSmoke" TargetName="Border" />
+                                                            <Setter Property="Foreground" Value="Gray" TargetName="Label" />
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </Button.Style>
+                                <Button.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="4" />
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
+                            <Button x:Name="CancelButton"
+                                IsCancel="True"
+                                Content="{Tr Cancel}"
+                                Command="{Binding CancelImportCommand}"
+                                Padding="10"
+                                Foreground="WhiteSmoke"
+                                FontWeight="Bold"
+                                Visibility="{Binding IsImporting, Converter={CustomBoolToVisibilityConverter}}"
+                                BorderBrush="Transparent">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Background" Value="#ea4335" />
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type Button}">
+                                                    <Border x:Name="Border" 
+                                                        Background="{TemplateBinding Background}"
+                                                        Padding="{TemplateBinding Padding}"
+                                                        BorderBrush="{TemplateBinding BorderBrush}">
+                                                        <Label Content="{TemplateBinding Content}"
+                                                           x:Name="Label"
+                                                           Padding="0"
+                                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                           Foreground="{TemplateBinding Foreground}"/>
+                                                    </Border>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="Background" Value="#ff6339" TargetName="Border" />
+                                                            <!--<Setter Property="Background" Value="#4bf478" TargetName="Border" />-->
+                                                            <Setter Property="Foreground" Value="Black" TargetName="Label" />
+                                                        </Trigger>
+                                                        <Trigger Property="IsEnabled" Value="False">
+                                                            <Setter Property="Background" Value="WhiteSmoke" TargetName="Border" />
+                                                            <Setter Property="Foreground" Value="Gray" TargetName="Label" />
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </Button.Style>
+                                <Button.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="4" />
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
+                        </StackPanelEx>
+                    </AutoGrid>
                 </AutoGrid>
             </DockPanel>
         </GroupBox>

@@ -15,7 +15,7 @@
     "en": "_Language",
     "fr": "_Langue"
   },
-  "_Device": {
+  "Device": {
     "en": "_Device",
     "fr": "_Appareil"
   },
@@ -74,6 +74,30 @@
   "NbrOfIsCheckedFiles": {
     "en": "{m} checked file | {m} checked files",
     "fr": "{m} fichier coché | {m} fichiers cochés"
+  },
+  "Preview": {
+    "en": "Preview",
+    "fr": "Aperçu"
+  },
+  "FullPath": {
+    "en": "Full path",
+    "fr": "Chemin Complet"
+  },
+  "Import": {
+    "en": "_Import",
+    "fr": "_Importer"
+  },
+  "Cancel": {
+    "en": "_Cancel",
+    "fr": "_Annuler"
+  },
+  "ImportState": {
+    "en": "{0}/{1} files imported",
+    "fr": "{0}/{1} fichiers importés"
+  },
+  "ImportErrorMessage": {
+    "en": "An error occured during importation",
+    "fr": "Une erreur est survenue durant l'importation"
   },
   "Minimize": {
     "en": "Minimize",

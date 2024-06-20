@@ -16,7 +16,7 @@ public class DirectoryViewModel(MediaDirectoryInfo mediaDirectoryInfo)
     {
         get
         {
-            if(files == null)
+            if (files == null)
                 ScanForFile();
 
             return files;
@@ -30,8 +30,11 @@ public class DirectoryViewModel(MediaDirectoryInfo mediaDirectoryInfo)
     bool notifyIsChecked = true;
     public void UpdateIsCheckedCount()
     {
-        if(notifyIsChecked)
+        if (notifyIsChecked)
+        {
             NotifyPropertyChanged(nameof(IsCheckedFilesCount));
+            CommandManager.InvalidateRequerySuggested();
+        }
     }
 
     public bool IsScanning { get; set; }
@@ -77,15 +80,14 @@ public class DirectoryViewModel(MediaDirectoryInfo mediaDirectoryInfo)
 
     private ICommand toggleIsCheckOfSelectedFilesCommand;
     public ICommand ToggleIsCheckOfSelectedFilesCommand => toggleIsCheckOfSelectedFilesCommand ??= new RelayCommand(_ => ToggleIsCheckOfSelectedFiles());
-    
 
     private void ToggleIsCheckOfSelectedFiles()
     {
-        if (files?.Any() == true)
+        if (files?.Count > 0)
         {
             foreach (var fileViewModel in files)
             {
-                if(fileViewModel.IsSelected)
+                if (fileViewModel.IsSelected)
                     fileViewModel.IsChecked = !fileViewModel.IsChecked;
             }
         }
@@ -96,7 +98,7 @@ public class DirectoryViewModel(MediaDirectoryInfo mediaDirectoryInfo)
 
     private void CheckOfSelectedFiles()
     {
-        if (files?.Any() == true)
+        if (files?.Count > 0)
         {
             foreach (var fileViewModel in files)
             {
@@ -111,7 +113,7 @@ public class DirectoryViewModel(MediaDirectoryInfo mediaDirectoryInfo)
 
     private void UnCheckOfSelectedFiles()
     {
-        if (files?.Any() == true)
+        if (files?.Count > 0)
         {
             foreach (var fileViewModel in files)
             {
@@ -138,7 +140,7 @@ public class DirectoryViewModel(MediaDirectoryInfo mediaDirectoryInfo)
         catch { }
         finally
         {
-            if(File.Exists(path))
+            if (File.Exists(path))
             {
                 using Process fileopener = new();
 
