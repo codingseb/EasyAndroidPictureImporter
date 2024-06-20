@@ -11,5 +11,6 @@
         </Style>
 
         <SolidColorBrush x:Key="BaseBackgroundBrush" Color="White" />
+        <SolidColorBrush x:Key="ZoneHidderBackground" Color="#99F5F5F5" />
     </Application.Resources>
 </Application>

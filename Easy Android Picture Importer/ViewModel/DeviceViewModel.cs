@@ -1,5 +1,6 @@
 ﻿using EasyAndroidPictureImporter.Utils;
 using MediaDevices;
+using System.Windows;
 
 namespace EasyAndroidPictureImporter.ViewModel;
 
@@ -75,11 +76,12 @@ public class DeviceViewModel
                     .Select(directory => new DirectoryViewModel(directory))
                     .ToList();
             }
-            catch { }
+            catch {}
             finally
             {
                 await Task.Delay(10);
-                NotifyPropertyChanged(nameof(Directories));
+                if(directories != null)
+                    NotifyPropertyChanged(nameof(Directories));
                 SelectedDirectory = Directories?.FirstOrDefault();
             }
         });
@@ -90,6 +92,7 @@ public class DeviceViewModel
     private void Device_DeviceRemoved(object sender, MediaDeviceEventArgs e)
     {
         Device.DeviceRemoved -= Device_DeviceRemoved;
-        _container.Devices.Remove(this);
+
+        App.Current.Dispatcher.Invoke(() => _container.Devices.Remove(this));
     }
 }

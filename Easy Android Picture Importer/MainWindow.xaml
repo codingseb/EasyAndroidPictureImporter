@@ -80,7 +80,8 @@
                       DataContext="{Binding SelectedDevice}">
                     <Grid>
                         <ListBox ItemsSource="{Binding Directories}"
-                         SelectedValue="{Binding SelectedDirectory}">
+                                 IsEnabled="{Binding DataContext.IsImporting, RelativeSource={RelativeSource AncestorType=Window}, Converter={BoolReverseConverter}}"
+                                 SelectedValue="{Binding SelectedDirectory}">
                             <ListBox.ItemTemplate>
                                 <DataTemplate DataType="vm:DeviceDirectoryViewModel">
                                     <TextBlock Text="{Binding DirectoryInfo.Name}" />
@@ -93,6 +94,7 @@
                     <DockPanel>
                         <Grid>
                             <DataGrid x:Name="FilesDataGrid" 
+                                 IsEnabled="{Binding DataContext.IsImporting, RelativeSource={RelativeSource AncestorType=Window}, Converter={BoolReverseConverter}}"
                                  DataContext="{Binding SelectedDirectory}"
                                  ItemsSource="{Binding Files}"
                                  SelectionUnit="FullRow"
@@ -166,6 +168,9 @@
                                     </DataGridTextColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
+                            <!--<Border Background="{DynamicResource ZoneHidderBackground}"
+                                    DataContext="{di:DIResolve vm:MainViewModel}"
+                                    Visibility="{Binding IsProgressing, Converter={CustomBoolToVisibilityConverter}}" />-->
                             <uicomp:LoadingPanel Visibility="{Binding SelectedDirectory.Files, Converter={IsNullToVisibilityConverter IsNullValue=Visible, IsNotNullValue=Collapsed}}" />
                         </Grid>
                     </DockPanel>
