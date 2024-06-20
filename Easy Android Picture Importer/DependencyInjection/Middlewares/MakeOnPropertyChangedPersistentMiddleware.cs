@@ -12,9 +12,11 @@ namespace EasyAndroidPictureImporter.DependencyInjection.Middlewares;
 /// Serialize the object on see event <see cref="INotifyPropertyChanged.PropertyChanged"/> when the property do not have the attribute <see cref="JsonIgnoreAttribute"/>
 /// </summary>
 /// <param name="fileName">To specify the file path where to persist the object, if not specify use <c>%APPDATA%\{AssemblyName}\{TypeOfObject}.json</c></param>
-public class MakeOnPropertyChangedPersistentMiddleware(string fileName = null) : IResolveMiddleware
+public class MakeOnPropertyChangedPersistentMiddleware(string fileName = null, Action<object> doAfterObjectPopulated = null) : IResolveMiddleware
 {
     private readonly Dictionary<string, bool> hasJsonIgnoreAttributeCache = [];
+
+    private readonly Action<object> _doAfterObjectPopulated = doAfterObjectPopulated;
 
     /// <summary>
     /// The file path where is persisted the object
@@ -38,6 +40,8 @@ public class MakeOnPropertyChangedPersistentMiddleware(string fileName = null) :
                 string json = File.ReadAllText(FileName);
                 JsonConvert.PopulateObject(json, obj);
             }
+
+            _doAfterObjectPopulated?.Invoke(obj);
 
             obj.PropertyChanged += Obj_PropertyChanged;
         }
