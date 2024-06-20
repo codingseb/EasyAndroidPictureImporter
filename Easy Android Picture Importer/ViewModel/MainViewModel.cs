@@ -14,15 +14,16 @@ namespace EasyAndroidPictureImporter.ViewModel;
 /// <summary>
 /// The Main ViewModel of the application
 /// </summary>
-public class MainViewModel(MediaDeviceComparer mediaDeviceComparer)
+public class MainViewModel(MediaDeviceComparer mediaDeviceComparer, Configuration configuration)
     : NotifyPropertyChangedBaseClass, IInitializable
 {
     private IEnumerable<MediaDevice> _devices = MediaDevice.GetDevices();
     private readonly MediaDeviceComparer _mediaDeviceComparer = mediaDeviceComparer;
+    private Configuration _configuration = configuration;
 
     public void Init()
     {
-        Devices = new(_devices.Select(device => new DeviceViewModel(device, this)));
+        Devices = new(_devices.Select(device => new DeviceViewModel(device, this, _configuration)));
 
         ScanForNewDevices();
     }
@@ -50,7 +51,7 @@ public class MainViewModel(MediaDeviceComparer mediaDeviceComparer)
             {
                 foreach (var device in newDevicesCollection.Except(_devices, _mediaDeviceComparer))
                 {
-                    Devices.Add(new DeviceViewModel(device, this));
+                    Devices.Add(new DeviceViewModel(device, this, _configuration));
                 }
 
                 foreach (var device in _devices.Except(newDevicesCollection, _mediaDeviceComparer))

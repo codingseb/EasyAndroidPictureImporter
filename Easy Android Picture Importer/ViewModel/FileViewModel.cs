@@ -11,8 +11,11 @@ using System.Windows.Media.Imaging;
 
 namespace EasyAndroidPictureImporter.ViewModel;
 
-public class FileViewModel(MediaFileInfo fileInfo, DirectoryViewModel directory) : ViewModelBase
+public class FileViewModel(MediaFileInfo fileInfo, DirectoryViewModel directory, Configuration configuration) 
+    : ViewModelBase
 {
+    private Configuration _configuration = configuration;
+
     public DirectoryViewModel Directory { get; } = directory;
 
     public MediaFileInfo FileInfo { get; } = fileInfo;
@@ -45,18 +48,22 @@ public class FileViewModel(MediaFileInfo fileInfo, DirectoryViewModel directory)
     {
         get
         {
+            bool isThumbnail = _configuration.ShowThumbnailsInPlaceOfIconInGrid;
+
             Icon ??= IconManager.FindIconForFilename(FileInfo.Name, false);
 
-            if (Thumbnail == null)
-                ScanForThumbnail();
+            if (Thumbnail == null && isThumbnail)
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+                ScanForThumbnailAsync();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 
-            return DI.Container.Resolve<Configuration>().ShowThumbnailsInPlaceOfIconInGrid
+            return isThumbnail
                 ? Thumbnail ?? Icon
                 : Icon;
         }
     }
 
-    public async Task ScanForThumbnail()
+    public async Task ScanForThumbnailAsync()
     {
         await Task.Run(async () =>
         {
@@ -64,16 +71,25 @@ public class FileViewModel(MediaFileInfo fileInfo, DirectoryViewModel directory)
 
             string thumbnailPath = Path.Combine(PathUtils.TempPath, $"Thumbnail_{FileInfo.Name}");
 
-            try
+            for (int retry = 3; retry > 0; retry--)
             {
-                await Task.Delay(1);
+                try
+                {
+                    await Task.Delay(1);
 
-                if (!File.Exists(thumbnailPath))
-                    FileInfo.CopyThumbnail(thumbnailPath, true);
+                    if (!File.Exists(thumbnailPath))
+                        FileInfo.CopyThumbnail(thumbnailPath, true);
 
-                await Task.Delay(1);
+                    retry=0;
+                }
+                catch(Exception ex)
+                {
+                    retry--;
+                    await Task.Delay(10);
+                }
             }
-            catch { }
+
+            await Task.Delay(1);
 
             if (new FileInfo(thumbnailPath).Length > 0)
             {

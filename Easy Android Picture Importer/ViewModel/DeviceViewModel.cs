@@ -11,10 +11,12 @@ public class DeviceViewModel
     : ViewModelBase
 {
     private readonly MainViewModel _container;
+    private Configuration _configuration;
 
-    public DeviceViewModel(MediaDevice device, MainViewModel container)
+    public DeviceViewModel(MediaDevice device, MainViewModel container, Configuration configuration)
     {
         _container = container;
+        _configuration = configuration;
         device.Connect();
         Device = device;
         Device.DeviceRemoved += Device_DeviceRemoved;
@@ -73,7 +75,7 @@ public class DeviceViewModel
 
                 directories = list
                     .OrderBy(directory => directory.Name)
-                    .Select(directory => new DirectoryViewModel(directory))
+                    .Select(directory => new DirectoryViewModel(directory, _configuration))
                     .ToList();
             }
             catch {}

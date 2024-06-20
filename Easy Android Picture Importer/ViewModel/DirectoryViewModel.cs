@@ -7,9 +7,11 @@ using System.Windows.Input;
 
 namespace EasyAndroidPictureImporter.ViewModel;
 
-public class DirectoryViewModel(MediaDirectoryInfo mediaDirectoryInfo)
+public class DirectoryViewModel(MediaDirectoryInfo mediaDirectoryInfo, Configuration configuration)
     : ViewModelBase
 {
+    private Configuration _configuration = configuration;
+
     public MediaDirectoryInfo DirectoryInfo { get; } = mediaDirectoryInfo;
 
     private List<FileViewModel> files;
@@ -97,7 +99,7 @@ public async void ScanForFile()
             .EnumerateFiles("*.*", System.IO.SearchOption.AllDirectories)
             .Where(file => file.Name?.StartsWith('.') == false)
             .OrderByDescending(file => file.LastWriteTime)
-            .Select(fileInfo => new FileViewModel(fileInfo, this))
+            .Select(fileInfo => new FileViewModel(fileInfo, this, _configuration))
             .ToList();
 
         await Task.Delay(10);
