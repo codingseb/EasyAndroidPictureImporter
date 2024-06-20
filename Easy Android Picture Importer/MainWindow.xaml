@@ -44,7 +44,8 @@
             </Style>
         </DockPanel.Style>
         <uicomp:MainWindowCustomTitleBar DockPanel.Dock="Top"
-                                        Height="32"/>
+                                         Height="32"
+                                         x:Name="TitleBar"/>
 
         <StatusBar DockPanel.Dock="Bottom"
                    Background="WhiteSmoke">

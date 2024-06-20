@@ -10,7 +10,8 @@
              xmlns:commands="clr-namespace:EasyAndroidPictureImporter.Helpers.Commands"
              mc:Ignorable="d" 
              d:DesignHeight="32" d:DesignWidth="1500"
-             DataContext="{di:DIResolve vm:MainViewModel}">
+             DataContext="{di:DIResolve vm:MainViewModel}"
+             Loaded="UserControl_Loaded">
     <UserControl.CommandBindings>
         <CommandBinding Command="SystemCommands.MaximizeWindowCommand" Executed="MaximizeWindowExecuted"/>
         <CommandBinding Command="SystemCommands.MinimizeWindowCommand" Executed="MinimizeWindowExecuted"/>
@@ -31,6 +32,31 @@
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="BorderThickness" Value="0" />
             <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter 
+                            Margin="2"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            RecognizesAccessKey="True" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="LightGray" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="local:SystemButton" BasedOn="{StaticResource {x:Type Button}}" >
+            <Style.Triggers>
+                <Trigger Property="SpecialIsHover" Value="True">
+                    <Setter Property="Background" Value="LightGray" />
+                </Trigger>
+            </Style.Triggers>
         </Style>
         <Style TargetType="Path" >
             <Setter Property="Width" Value="16" />
@@ -82,8 +108,9 @@
                         Focusable="False">
                     <Path Data="F1M3,8L13,8 13,7 3,7z" />
                 </Button>
-                <Button Command="SystemCommands.MaximizeWindowCommand"
-                        Focusable="False">
+                <local:SystemButton Command="SystemCommands.MaximizeWindowCommand"
+                        Focusable="False"
+                        x:Name="MaximizeWindowButton">
                     <Path>
                         <Path.Style>
                             <Style TargetType="Path" BasedOn="{StaticResource {x:Type Path}}" >
@@ -98,25 +125,12 @@
                             </Style>
                         </Path.Style>
                     </Path>
-                </Button>
+                </local:SystemButton>
                 <Button Command="SystemCommands.CloseWindowCommand"
                         ToolTip="{Tr Exit}"
                         Focusable="False">
                     <Button.Style>
                         <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}" >
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type Button}">
-                                        <Border Background="{TemplateBinding Background}">
-                                            <ContentPresenter 
-                                                        Margin="2"
-                                                        HorizontalAlignment="Center"
-                                                        VerticalAlignment="Center"
-                                                        RecognizesAccessKey="True" />
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
                             <Style.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True" >
                                     <Setter Property="Background" Value="Red" />
