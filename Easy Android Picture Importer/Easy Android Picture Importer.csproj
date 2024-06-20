@@ -9,7 +9,9 @@
     <UseWPF>true</UseWPF>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
-  </PropertyGroup>
+		<AssemblyVersion>1.0.1.0</AssemblyVersion>
+		<FileVersion>1.0.1.0</FileVersion>
+	</PropertyGroup>
 
   <ItemGroup>
     <Compile Remove="Resources\**" />
