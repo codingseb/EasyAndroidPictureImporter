@@ -5,7 +5,7 @@ namespace EasyAndroidPictureImporter.ViewModel;
 /// <summary>
 /// To store the configuration of the app
 /// </summary>
-public class Configuration : ViewModelBase
+public class Configuration : NotifyPropertyChangedOnChildsChanges
 {
     /// <summary>
     /// The selected UI language
