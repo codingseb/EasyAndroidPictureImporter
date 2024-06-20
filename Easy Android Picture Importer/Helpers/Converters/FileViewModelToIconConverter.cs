@@ -13,6 +13,7 @@ namespace EasyAndroidPictureImporter.Helpers.Converters;
 /// </summary>
 public class FileViewModelToIconConverter : MarkupExtension, IValueConverter
 {
+    /// <inheritdoc/>
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
         if (value == null)
@@ -28,7 +29,9 @@ public class FileViewModelToIconConverter : MarkupExtension, IValueConverter
         }
     }
 
+    /// <inheritdoc/>
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
 
+    /// <inheritdoc/>
     public override object ProvideValue(IServiceProvider serviceProvider) => this;
 }

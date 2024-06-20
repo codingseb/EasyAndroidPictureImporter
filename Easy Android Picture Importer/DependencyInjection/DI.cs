@@ -45,7 +45,7 @@ public static class DI
 
         builder.RegisterType<Configuration>()
             .AsSelf()
-            .ConfigurePipeline(pipeline => pipeline.Use(new MakeItPersistentOnPropertyChangedMiddleware()))
+            .ConfigurePipeline(pipeline => pipeline.Use(new PersistOnPropertyChangedMiddleware()))
             .SingleInstance()
             .AutoActivate();
 

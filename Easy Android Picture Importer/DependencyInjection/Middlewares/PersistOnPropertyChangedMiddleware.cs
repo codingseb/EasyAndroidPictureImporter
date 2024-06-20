@@ -12,7 +12,9 @@ namespace EasyAndroidPictureImporter.DependencyInjection.Middlewares;
 /// Serialize the object on see event <see cref="INotifyPropertyChanged.PropertyChanged"/> when the property do not have the attribute <see cref="JsonIgnoreAttribute"/>
 /// </summary>
 /// <param name="fileName">To specify the file path where to persist the object, if not specify use <c>%APPDATA%\{AssemblyName}\{TypeOfObject}.json</c></param>
-public class MakeItPersistentOnPropertyChangedMiddleware(string fileName = null, Action<object> doAfterObjectPopulated = null) : IResolveMiddleware
+/// <param name="doAfterObjectPopulated">if specified the action is call just after object has been populate with the last save at init</c></param>
+public class PersistOnPropertyChangedMiddleware(string fileName = null, Action<object> doAfterObjectPopulated = null)
+    : IResolveMiddleware
 {
     private readonly Dictionary<string, bool> hasJsonIgnoreAttributeCache = [];
 
@@ -32,8 +34,11 @@ public class MakeItPersistentOnPropertyChangedMiddleware(string fileName = null,
         next(context);
         if (context.Instance is INotifyPropertyChanged obj)
         {
-            string roamingDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Assembly.GetExecutingAssembly().GetName().Name);
-            FileName ??= Path.Combine(roamingDir, obj.GetType().Name + ".json");
+            if (FileName == null)
+            {
+                string roamingDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Assembly.GetExecutingAssembly().GetName().Name);
+                FileName = Path.Combine(roamingDir, obj.GetType().Name + ".json");
+            }
 
             if (File.Exists(FileName))
             {

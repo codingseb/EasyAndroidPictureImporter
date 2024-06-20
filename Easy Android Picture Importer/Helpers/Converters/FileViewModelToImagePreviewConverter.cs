@@ -15,6 +15,7 @@ namespace EasyAndroidPictureImporter.Helpers.Converters;
 /// </summary>
 public class FileViewModelToImagePreviewConverter : MarkupExtension, IValueConverter
 {
+    /// <inheritdoc/>
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
         if (value == null)
@@ -68,7 +69,9 @@ public class FileViewModelToImagePreviewConverter : MarkupExtension, IValueConve
         }
     }
 
+    /// <inheritdoc/>
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
 
+    /// <inheritdoc/>
     public override object ProvideValue(IServiceProvider serviceProvider) => this;
 }
