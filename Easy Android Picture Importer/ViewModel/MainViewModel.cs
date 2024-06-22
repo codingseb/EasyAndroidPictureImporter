@@ -1,5 +1,4 @@
 ﻿using CodingSeb.Localization;
-using CodingSeb.Mvvm;
 using CommunityToolkit.Mvvm.Input;
 using EasyAndroidPictureImporter.DependencyInjection;
 using EasyAndroidPictureImporter.Utils;
@@ -15,7 +14,7 @@ namespace EasyAndroidPictureImporter.ViewModel;
 /// The Main ViewModel of the application
 /// </summary>
 public partial class MainViewModel(MediaDeviceComparer mediaDeviceComparer, Configuration configuration)
-    : NotifyPropertyChangedBaseClass, IInitializable
+    : ViewModelBase, IInitializable
 {
     private IEnumerable<MediaDevice> _devices = MediaDevice.GetDevices();
     private readonly MediaDeviceComparer _mediaDeviceComparer = mediaDeviceComparer;

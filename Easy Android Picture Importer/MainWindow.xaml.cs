@@ -1,11 +1,7 @@
-﻿using EasyAndroidPictureImporter.Interop;
-using EasyAndroidPictureImporter.Utils;
-using EasyAndroidPictureImporter.ViewModel;
-using System.IO;
+﻿using EasyAndroidPictureImporter.ViewModel;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Interop;
 
 namespace EasyAndroidPictureImporter;
 

@@ -36,7 +36,6 @@
     <PackageReference Include="CodingSeb.Localization" Version="1.3.0" />
     <PackageReference Include="CodingSeb.Localization.JsonFileLoader" Version="1.3.0" />
     <PackageReference Include="CodingSeb.Localization.WPF" Version="1.3.0" />
-    <PackageReference Include="CodingSeb.Mvvm" Version="1.2.4" />
     <PackageReference Include="CodingSebLocalization.Fody" Version="1.3.0" PrivateAssets="all" />
     <PackageReference Include="FontAwesome6.Fonts" Version="2.5.1" />
     <PackageReference Include="MediaDevices" Version="1.10.0" />

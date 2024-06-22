@@ -1,7 +1,4 @@
-﻿using Autofac;
-using CodingSeb.Localization;
-using CodingSeb.Mvvm;
-using EasyAndroidPictureImporter.DependencyInjection;
+﻿using CodingSeb.Localization;
 using EasyAndroidPictureImporter.Utils;
 using MediaDevices;
 using System.Globalization;

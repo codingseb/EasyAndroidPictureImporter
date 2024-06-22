@@ -1,6 +1,5 @@
 ﻿using EasyAndroidPictureImporter.Utils;
 using MediaDevices;
-using System.Windows;
 
 namespace EasyAndroidPictureImporter.ViewModel;
 
