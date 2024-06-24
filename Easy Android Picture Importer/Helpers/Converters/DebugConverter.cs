@@ -1,8 +1,10 @@
-﻿using System.Globalization;
+﻿#if DEBUG
+using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Markup;
 
 namespace EasyAndroidPictureImporter.Helpers.Converters;
+
 
 /// <summary>
 /// Only used in dev to debug a binding
@@ -37,3 +39,5 @@ public class DebugConverter : MarkupExtension, IValueConverter, IMultiValueConve
     /// <inheritdoc/>
     public override object ProvideValue(IServiceProvider serviceProvider) => this;
 }
+
+#endif

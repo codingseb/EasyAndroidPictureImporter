@@ -61,4 +61,8 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Utils\NewFolder\" />
+  </ItemGroup>
+
 </Project>
