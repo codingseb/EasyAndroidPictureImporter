@@ -83,6 +83,10 @@
     "en": "Date modified",
     "fr": "Modifié le"
   },
+  "FileType": {
+    "en": "File type",
+    "fr": "Type de fichier"
+  },
   "Size": {
     "en": "Size",
     "fr": "Taille"

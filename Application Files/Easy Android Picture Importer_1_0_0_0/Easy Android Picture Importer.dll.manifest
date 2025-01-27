@@ -126,15 +126,6 @@
       <dsig:DigestValue>2I3vTZ0MS5Pk/etd4jweYfplR+7dLx0/+yZIR2xo9Es=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="CodingSeb.Mvvm.dll" size="70656">
-    <hash>
-      <dsig:Transforms>
-        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
-      </dsig:Transforms>
-      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>pKYDpxtnsxKQBVrfSk88iwFP0/+glKQpEZi3i+L93J4=</dsig:DigestValue>
-    </hash>
-  </file>
   <file name="CommunityToolkit.Mvvm.dll" size="117384">
     <hash>
       <dsig:Transforms>
@@ -159,25 +150,25 @@
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>4p5gU+DOUfTBbYJy//iNu55cfz9fiijSb7et+8PeQh8=</dsig:DigestValue>
+      <dsig:DigestValue>bJbjNdkor+YaNQe+L8w3t0MprsTd5UUqs+yn2ajgpY0=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="Easy Android Picture Importer.exe" size="146944">
+  <file name="Easy Android Picture Importer.exe" size="142848">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>RVOjpcVVtvboc7evh9fKVb+7sOTNzy+YcdygqKzBFDg=</dsig:DigestValue>
+      <dsig:DigestValue>fX68Els+8/Sx+xqnzCAi5fB9u5J2JhgWDWgQHRu6bOM=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="Easy Android Picture Importer.runtimeconfig.json" size="458">
+  <file name="Easy Android Picture Importer.runtimeconfig.json" size="515">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>xxFSvyXkDWR7JEDFs5vhV6PTVhBr6dW2eKuXu4e054I=</dsig:DigestValue>
+      <dsig:DigestValue>ia0epcnCC2smZUfvJ8CuOEDKtWQtPCrt8GtwJiRWcd0=</dsig:DigestValue>
     </hash>
   </file>
   <file name="FontAwesome6.Core.dll" size="74752">
@@ -216,13 +207,13 @@
       <dsig:DigestValue>wKPnb7EepIKE5vypFb0TCtnuOX1wVxEwZ/i65H/DIzA=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="lang\Localization.loc.json" size="4693">
+  <file name="lang\Localization.loc.json" size="4769">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>gq9VVow0DyXoJPCdWgGQe1Wf+M2aGVRfijjR29ODWfw=</dsig:DigestValue>
+      <dsig:DigestValue>BLzv+D5vEuLXOeNfQqE3IECCYk/IryUT2SFWxtCjonc=</dsig:DigestValue>
     </hash>
   </file>
   <file name="MediaDevices.dll" size="174080">
@@ -252,13 +243,13 @@
       <dsig:DigestValue>IsZJ91/OW+fHzNqIgEc7Y072ns8z9dGritiSyvR9Wgc=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="publishEasy Android Picture Importer.deps.json" size="27954">
+  <file name="publishEasy Android Picture Importer.deps.json" size="27294">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>kksaYGQFMlyzgR8Ro4IVL/Sf75MvdPeFi0gfjUbCgRA=</dsig:DigestValue>
+      <dsig:DigestValue>Pm6BvG8qGdhutrgk1j3tKfEAO5qPtxRVMhKZXoHmCEI=</dsig:DigestValue>
     </hash>
   </file>
   <file name="System.Drawing.Common.dll" size="610992">

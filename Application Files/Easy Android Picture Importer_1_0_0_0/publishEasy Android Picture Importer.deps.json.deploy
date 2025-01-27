@@ -15,7 +15,6 @@
           "CodingSeb.Localization": "1.3.0",
           "CodingSeb.Localization.JsonFileLoader": "1.3.0",
           "CodingSeb.Localization.WPF": "1.3.0",
-          "CodingSeb.Mvvm": "1.2.4",
           "CodingSebLocalization.Fody": "1.3.0",
           "FontAwesome6.Fonts": "2.5.1",
           "MediaDevices": "1.10.0",
@@ -110,17 +109,6 @@
           "lib/net6.0-windows7.0/CodingSeb.Localization.WPF.dll": {
             "assemblyVersion": "1.3.0.0",
             "fileVersion": "1.3.0.0"
-          }
-        }
-      },
-      "CodingSeb.Mvvm/1.2.4": {
-        "dependencies": {
-          "CodingSeb.ExpressionEvaluator": "1.4.40"
-        },
-        "runtime": {
-          "lib/net5.0-windows7.0/CodingSeb.Mvvm.dll": {
-            "assemblyVersion": "1.2.4.0",
-            "fileVersion": "1.2.4.0"
           }
         }
       },
@@ -457,13 +445,6 @@
       "sha512": "sha512-RYlGQMjxelkkfH/PGhoQgIzyV3417moyaMP+7espsYyvRxhI2AET+abiDbOUyXhyu1+10dY6Z5EKUl7Lo+HaIg==",
       "path": "codingseb.localization.wpf/1.3.0",
       "hashPath": "codingseb.localization.wpf.1.3.0.nupkg.sha512"
-    },
-    "CodingSeb.Mvvm/1.2.4": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-kZwrwyU9xIH1JtVBrj147xfwP8EFOASyV/Fh8aykqRi078Q1wRxkv9i2zPDAKxZCNDLhOGBHi3XJU0mG0XCw6g==",
-      "path": "codingseb.mvvm/1.2.4",
-      "hashPath": "codingseb.mvvm.1.2.4.nupkg.sha512"
     },
     "CodingSebLocalization.Fody/1.3.0": {
       "type": "package",

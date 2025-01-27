@@ -14,14 +14,14 @@
     <framework targetVersion="4.5" profile="Full" supportedRuntime="4.0.30319" />
   </compatibleFrameworks>
   <dependency>
-    <dependentAssembly dependencyType="install" codebase="Application Files\Easy Android Picture Importer_1_0_0_0\Easy Android Picture Importer.dll.manifest" size="12920">
+    <dependentAssembly dependencyType="install" codebase="Application Files\Easy Android Picture Importer_1_0_0_0\Easy Android Picture Importer.dll.manifest" size="12523">
       <assemblyIdentity name="Easy Android Picture Importer.exe" version="1.0.0.0" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>7sWBGIZ1WJ2X3RC/k/MRh6N2PQiP8d0bj7rdrV22IVk=</dsig:DigestValue>
+        <dsig:DigestValue>vwTjU3lZIzu+eddMh8IakuwCC2cH/Lz9AwdqNNQwitk=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
