@@ -2,8 +2,10 @@
 using CommunityToolkit.Mvvm.Input;
 using EasyAndroidPictureImporter.Utils;
 using MediaDevices;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Windows.Data;
 
 namespace EasyAndroidPictureImporter.ViewModel;
 
@@ -14,9 +16,9 @@ public partial class DirectoryViewModel(MediaDirectoryInfo mediaDirectoryInfo, C
 
     public MediaDirectoryInfo DirectoryInfo { get; } = mediaDirectoryInfo;
 
-    private List<FileViewModel> files;
+    private ObservableCollection<FileViewModel> files;
 
-    public List<FileViewModel> Files
+    public ObservableCollection<FileViewModel> Files
     {
         get
         {
@@ -24,6 +26,16 @@ public partial class DirectoryViewModel(MediaDirectoryInfo mediaDirectoryInfo, C
                 ScanForFile();
 
             return files;
+        }
+    }
+
+    public string FileFilter { get; set; } = "";
+
+    public void OnFileFilterChanged()
+    {
+        if(files != null)
+        {
+            CollectionViewSource.GetDefaultView(files).Filter = file => string.IsNullOrEmpty(FileFilter) || ( file is FileViewModel fileViewModel && fileViewModel.FileInfo.Name.Contains(FileFilter, StringComparison.InvariantCultureIgnoreCase));
         }
     }
 
@@ -94,12 +106,12 @@ public partial class DirectoryViewModel(MediaDirectoryInfo mediaDirectoryInfo, C
 
         await Task.Run(async () =>
         {
-            files = DirectoryInfo
+            files = new ObservableCollection<FileViewModel>(DirectoryInfo
                 .EnumerateFiles("*.*", System.IO.SearchOption.AllDirectories)
                 .Where(file => file.Name?.StartsWith('.') == false)
                 .OrderByDescending(file => file.LastWriteTime)
                 .Select(fileInfo => new FileViewModel(fileInfo, this, _configuration))
-                .ToList();
+                .ToList());
 
             await Task.Delay(10);
 
@@ -120,7 +132,7 @@ public partial class DirectoryViewModel(MediaDirectoryInfo mediaDirectoryInfo, C
         {
             checkOrUnCheckAllfiles=value;
             notifyIsChecked = false;
-            files.ForEach(fileViewModel => fileViewModel.IsChecked = value);
+            files.ToList().ForEach(fileViewModel => fileViewModel.IsChecked = value);
             notifyIsChecked = true;
             NotifyPropertyChanged(nameof(IsCheckedFilesCount));
         }

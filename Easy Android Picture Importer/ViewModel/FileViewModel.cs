@@ -20,6 +20,8 @@ public class FileViewModel(MediaFileInfo fileInfo, DirectoryViewModel directory,
     [Localize]
     public string SizeInKB => string.Format(Loc.Tr("SizeInKB"), FileInfo.Length / 1024);
 
+    public string FileType => Path.GetExtension(FileInfo.Name).ToUpper();
+
     [Localize]
     public string Modification => FileInfo.LastWriteTime?.ToString(Loc.Tr("DateTimeFormat"), CultureInfo.InvariantCulture);
 

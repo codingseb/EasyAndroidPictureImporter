@@ -11,7 +11,11 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <DataGrid x:Name="FilesDataGrid" 
+        <DockPanel>
+            <TextBox Text="{Binding SelectedDirectory.FileFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     DockPanel.Dock="Top"/>
+
+            <DataGrid x:Name="FilesDataGrid" 
                   IsEnabled="{Binding DataContext.IsImporting, RelativeSource={RelativeSource AncestorType=Window}, Converter={BoolReverseConverter}}"
                   DataContext="{Binding SelectedDirectory}"
                   ItemsSource="{Binding Files}"
@@ -27,65 +31,69 @@
                   HorizontalGridLinesBrush="Transparent"
                   IsReadOnly="True"
                   SelectedValue="{Binding SelectedFile}">
-            <DataGrid.RowStyle>
-                <Style TargetType="{x:Type DataGridRow}">
-                    <Setter Property="ContextMenu">
-                        <Setter.Value>
-                            <ContextMenu>
-                                <MenuItem Header="{Tr CheckSelectedFiles}"
+                <DataGrid.RowStyle>
+                    <Style TargetType="{x:Type DataGridRow}">
+                        <Setter Property="ContextMenu">
+                            <Setter.Value>
+                                <ContextMenu>
+                                    <MenuItem Header="{Tr CheckSelectedFiles}"
                                       Command="{Binding Directory.CheckSelectedFilesCommand}"/>
-                                <MenuItem Header="{Tr UncheckSelectedFiles}"
+                                    <MenuItem Header="{Tr UncheckSelectedFiles}"
                                       Command="{Binding Directory.UncheckSelectedFilesCommand}"/>
-                                <MenuItem Header="{Tr ToggleCheckSelectedFiles}"
+                                    <MenuItem Header="{Tr ToggleCheckSelectedFiles}"
                                       Command="{Binding Directory.ToggleIsCheckOfSelectedFilesCommand}"/>
-                            </ContextMenu>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </DataGrid.RowStyle>
-            <DataGrid.InputBindings>
-                <MouseBinding Gesture="LeftDoubleClick" Command="{Binding OpenSelectedFileCommand}" />
-                <KeyBinding Gesture="Enter" Command="{Binding OpenSelectedFileCommand}" />
-                <KeyBinding Gesture="Space" Command="{Binding ToggleIsCheckOfSelectedFilesCommand}" />
-            </DataGrid.InputBindings>
-            <DataGrid.Columns>
-                <DataGridTemplateColumn CanUserResize="False">
-                    <DataGridTemplateColumn.Header>
-                        <CheckBox DockPanel.Dock="Top"
+                                </ContextMenu>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </DataGrid.RowStyle>
+                <DataGrid.InputBindings>
+                    <MouseBinding Gesture="LeftDoubleClick" Command="{Binding OpenSelectedFileCommand}" />
+                    <KeyBinding Gesture="Enter" Command="{Binding OpenSelectedFileCommand}" />
+                    <KeyBinding Gesture="Space" Command="{Binding ToggleIsCheckOfSelectedFilesCommand}" />
+                </DataGrid.InputBindings>
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn CanUserResize="False">
+                        <DataGridTemplateColumn.Header>
+                            <CheckBox DockPanel.Dock="Top"
                                   IsChecked="{Binding DataContext.CheckOrUnCheckAllfiles, RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       VerticalContentAlignment="Center"
                                       Margin="4,0"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTemplateColumn CanUserResize="False"
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn CanUserResize="False"
                                         Width="{Binding ShowThumbnailsInPlaceOfIconInGrid, Source={di:DIResolve vm:Configuration}, Converter={BoolToObjectConverter FalseValue=16, TrueValue=128}}">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Image Source="{Binding ThumbnailOrIcon}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTextColumn Binding="{Binding FileInfo.Name}"
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding ThumbnailOrIcon}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Binding="{Binding FileInfo.Name}"
                                     Width="250"
                                     Header="{Tr Name}" />
-                <DataGridTextColumn Binding="{Binding Modification}"
+                    <DataGridTextColumn Binding="{Binding FileType}"
+                                    Header="{Tr FileType}"
+                                    Width="60"/>
+                    <DataGridTextColumn Binding="{Binding Modification}"
                                     Header="{Tr Modification}" />
-                <DataGridTextColumn Binding="{Binding SizeInKB}"
+                    <DataGridTextColumn Binding="{Binding SizeInKB}"
                                     Header="{Tr Size}"
                                     Width="60">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="HorizontalAlignment" Value="Right" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-            </DataGrid.Columns>
-        </DataGrid>
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Right" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </DockPanel>
         <local:LoadingPanel Visibility="{Binding SelectedDirectory.Files, Converter={IsNullToVisibilityConverter IsNullValue=Visible, IsNotNullValue=Collapsed}}" />
     </Grid>
 </UserControl>

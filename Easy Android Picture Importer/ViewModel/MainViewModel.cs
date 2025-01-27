@@ -106,7 +106,7 @@ public partial class MainViewModel(MediaDeviceComparer mediaDeviceComparer, Conf
 
             if (files?.Count > 0)
             {
-                var filesToCopy = files.FindAll(f => f.IsChecked);
+                var filesToCopy = files.ToList().FindAll(f => f.IsChecked);
                 ImportProgress = 0;
                 ImportMax = filesToCopy.Count;
                 ImportState = string.Format(Loc.Tr("ImportState"), 0, filesToCopy.Count);
